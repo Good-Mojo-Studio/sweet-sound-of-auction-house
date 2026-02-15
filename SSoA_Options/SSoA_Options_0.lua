@@ -1,37 +1,60 @@
--- Move the Tabs --
+-- some variables --
+local L = VDW.SSOA.Local
+local C = VDW.GetAddonColors("SSOA")
+local prefixTip = VDW.Prefix("SSOA")
+local maxW = 128
+local finalW = 0
+-- entering exit button --
+ssoaOptions00.ExitButton:HookScript("OnEnter", function(self)
+	VDW.Tooltip_Show(self, prefixTip, L.TIP_CLOSE_PANEL, C.Main)
+end)
+-- Move the tabs frame --
 ssoaOptions00:RegisterForDrag("LeftButton")
 ssoaOptions00:SetScript("OnDragStart", ssoaOptions00.StartMoving)
 ssoaOptions00:SetScript("OnDragStop", ssoaOptions00.StopMovingOrSizing)
--- taking care of the Tabs --
--- naming --
-ssoaOptions00Tab1.Text:SetText("Notifications")
-ssoaOptions00Tab2.Text:SetText("SSoA Frame")
-ssoaOptions00Tab3.Text:SetText("Profiles")
--- sort & hiding the texts --
-for i = 2, 3, 1 do
-	_G["ssoaOptions00Tab"..i]:SetPoint("TOP", _G["ssoaOptions00Tab"..i-1], "BOTTOM", 0, 0)
-	_G["ssoaOptions00Tab"..i-1].CenterTxt:Hide()
+-- Taking care of the Tabs --
+-- Naming the tab --
+ssoaOptions00Tab1.Text:SetText(L.T_SOUNDS_EMOTES)
+ssoaOptions00Tab2.Text:SetText(L.P_TAB)
+-- Position & center text color --
+for i = 1, 2, 1 do
+	local w = _G["ssoaOptions00Tab"..i].Text:GetStringWidth()
+	if w > maxW then maxW = w end
 end
-ssoaOptions00Tab3.CenterTxt:SetText("Thank you for using this amazing add-on!|nYou are a |cff00CED1Funky|r and a |cffFF0055Groovy|r person!|nMay the good |cff9400D3Mojo|r be with you!")
-ssoaOptions00.BGtexture:ClearAllPoints()
-ssoaOptions00.BGtexture:SetPoint("TOPRIGHT", ssoaOptions00, "TOPRIGHT", 0, 0)
-ssoaOptions00.BGtexture:SetPoint("BOTTOMLEFT", ssoaOptions00Tab3, "BOTTOMLEFT", 0, -128)
--- clicking on the tabs --
-for i = 1, 3, 1 do
+finalW = math.ceil(maxW + 16)
+for i = 1, 2, 1 do
+	_G["ssoaOptions00Tab"..i]:SetWidth(finalW)
+end
+ssoaOptions00Tab2:SetPoint("TOP", ssoaOptions00Tab1, "BOTTOM", 0, 0)
+
+-- Entering the tabs --
+ssoaOptions00Tab1:HookScript("OnEnter", function(self)
+	local word = self.Text:GetText()
+	VDW.Tooltip_Show(self, prefixTip, string.format(L.T_TIP, word), C.Main)
+end)
+ssoaOptions00Tab2:HookScript("OnEnter", function(self)
+	VDW.Tooltip_Show(self, prefixTip, L.P_TITLE, C.Main)
+end)
+-- Leaving the tabs --
+for i = 1, 2, 1 do
+	_G["ssoaOptions00Tab"..i]:HookScript("OnLeave", function(self)
+		VDW.Tooltip_Hide()
+	end)
+end
+-- clickingthe tabs --
+for i = 1, 2, 1 do
 	_G["ssoaOptions00Tab"..i]:HookScript("OnClick", function(self, button, down)
 		if button == "LeftButton" and down == false then
 			if not _G["ssoaOptions"..i]:IsShown() then _G["ssoaOptions"..i]:Show() end
 		end
 	end)
 end
--- showing the tabs --
+-- show the tabs frame --
 ssoaOptions00:SetScript("OnShow", function(self)
 	if not ssoaOptions1:IsShown() then ssoaOptions1:Show() end
 end)
--- hiding the tabs --
+-- Hide the tabs frame --
 ssoaOptions00:HookScript("OnHide", function(self)
-	for i = 1, 3, 1 do
-		if _G["ssoaOptions"..i]:IsShown() then _G["ssoaOptions"..i]:Hide() end
-	end
+	if ssoaOptions1:IsShown() then ssoaOptions1:Hide() end
+	if ssoaOptions2:IsShown() then ssoaOptions2:Hide() end
 end)
-

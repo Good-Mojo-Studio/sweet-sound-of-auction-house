@@ -1,285 +1,412 @@
---taking care of the panel --
-ssoaOptions1.TopTxt:SetText("Auction House notifications!")
+-- some variables --
+local L = VDW.SSOA.Local
+local C = VDW.GetAddonColors("SSOA")
+local prefixTip = VDW.Prefix("SSOA")
+local maxW = 160
+local finalW = 0
+local counter = 0
+local happyEmotes = {"None", "CHEER", "Congratulate", "Dance", "WHOA"}
+local happySounds = {"None","Cash Machine"}
+local sadEmotes = {"None", "MOURN", "Angry", "Violin", "OOPS"}
+local sadSounds = {"None", "Zong", "Bells"}
+-- Taking care of the option panel --
+ssoaOptions1:SetWidth(576)
+ssoaOptions1:ClearAllPoints()
+ssoaOptions1:SetPoint("TOPLEFT", ssoaOptions00, "TOPLEFT", 0, 0)
+-- Background of the option panel --
+ssoaOptions1.BGtexture:SetTexture("Interface\\BlackMarket\\BlackMarketBackground-Tile.blp", "CLAMP", "CLAMP", "NEAREST")
+ssoaOptions1.BGtexture:SetVertexColor(C.High:GetRGB())
+ssoaOptions1.BGtexture:SetDesaturation(0.3)
+-- Title of the option panel --
+ssoaOptions1.Title:SetTextColor(C.Main:GetRGB())
+ssoaOptions1.Title:SetText(prefixTip.."|nVersion: "..C.High:WrapTextInColorCode(C_AddOns.GetAddOnMetadata("SSOA", "Version")))
+-- Top text of the option panel --
+ssoaOptions1.TopTxt:SetTextColor(C.Main:GetRGB())
+ssoaOptions1.TopTxt:SetText(L.P_SOUNDS_EMOTES)
+-- Bottom right text of the option panel --
+ssoaOptions1.BottomRightTxt:SetTextColor(C.Main:GetRGB())
+ssoaOptions1.BottomRightTxt:SetText(C_AddOns.GetAddOnMetadata("SSOA", "X-Website"))
 -- taking care of the boxes --
-ssoaOptions1Box1.TitleTxt:SetText("Selling Notifications")
-ssoaOptions1Box2.TitleTxt:SetText("Expired Notifications")
--- Checking the Saved Variables --
+ssoaOptions1Box1.Title:SetText(L.B_A_SOLD)
+ssoaOptions1Box2.Title:SetText(L.B_A_EXPIRED)
+ssoaOptions1Box2:SetPoint("TOPLEFT", ssoaOptions1Box1, "TOPRIGHT", 0, 0)
+ssoaOptions1Box3.Title:SetText(L.B_A_WON)
+ssoaOptions1Box3:SetPoint("TOPLEFT", ssoaOptions1Box1, "BOTTOMLEFT", 0, 0)
+ssoaOptions1Box4.Title:SetText(L.B_A_OUTBID)
+ssoaOptions1Box4:SetPoint("TOPLEFT", ssoaOptions1Box3, "TOPRIGHT", 0, 0)
+ssoaOptions1Box5.Title:SetText(L.B_B_PLACED)
+ssoaOptions1Box5:SetPoint("TOPLEFT", ssoaOptions1Box3, "BOTTOMLEFT", 0, 0)
+ssoaOptions1Box6.Title:SetText(L.B_A_REMOVED)
+ssoaOptions1Box6:SetPoint("TOPLEFT", ssoaOptions1Box5, "TOPRIGHT", 0, 0)
+for i = 1, 6, 1 do
+	local tW = _G["ssoaOptions1Box"..i].Title:GetStringWidth()+16
+	local W = _G["ssoaOptions1Box"..i]:GetWidth()
+	if tW >= W then
+		_G["ssoaOptions1Box"..i]:SetWidth(tW)
+	end
+	_G["ssoaOptions1Box"..i]:SetHeight(104)
+end
+-- Coloring the boxes --
+for i = 1, 6, 1 do
+	_G["ssoaOptions1Box"..i].Title:SetTextColor(C.Main:GetRGB())
+	_G["ssoaOptions1Box"..i].BorderTop:SetVertexColor(C.High:GetRGB())
+	_G["ssoaOptions1Box"..i].BorderBottom:SetVertexColor(C.High:GetRGB())
+	_G["ssoaOptions1Box"..i].BorderLeft:SetVertexColor(C.High:GetRGB())
+	_G["ssoaOptions1Box"..i].BorderRight:SetVertexColor(C.High:GetRGB())
+end
+-- Coloring the pop out buttons --
+local function ColoringPopOutButtons(k, var1)
+	_G["ssoaOptions1Box"..k.."PopOut"..var1].Text:SetTextColor(C.Main:GetRGB())
+	_G["ssoaOptions1Box"..k.."PopOut"..var1].Title:SetTextColor(C.High:GetRGB())
+	_G["ssoaOptions1Box"..k.."PopOut"..var1].NormalTexture:SetVertexColor(C.High:GetRGB())
+	_G["ssoaOptions1Box"..k.."PopOut"..var1].HighlightTexture:SetVertexColor(C.Main:GetRGB())
+	_G["ssoaOptions1Box"..k.."PopOut"..var1].PushedTexture:SetVertexColor(C.High:GetRGB())
+end
+-- Pop out 1 Buttons happy emotes --
+for k = 1, 5, 2 do
+	_G["ssoaOptions1Box"..k.."PopOut1"].Title:SetText("Emotes")
+	ColoringPopOutButtons(k, 1)
+	for i, name in ipairs(happyEmotes) do
+		local btn = CreateFrame("Button", "ssoaOptions1Box"..k.."PopOut1Choice"..i, nil, "vdwPopOutButton")
+		_G["ssoaOptions1Box"..k.."PopOut1Choice"..i]:ClearAllPoints()
+		if i == 1 then
+			_G["ssoaOptions1Box"..k.."PopOut1Choice"..i]:SetParent(_G["ssoaOptions1Box"..k.."PopOut1"])
+			_G["ssoaOptions1Box"..k.."PopOut1Choice"..i]:SetPoint("TOP", "ssoaOptions1Box"..k.."PopOut1", "BOTTOM", 0, 8)
+			_G["ssoaOptions1Box"..k.."PopOut1Choice"..i]:SetScript("OnShow", function(self)
+				self:GetParent():SetNormalAtlas("charactercreate-customize-dropdownbox-hover")
+				PlaySound(855, "Master")
+			end)
+			_G["ssoaOptions1Box"..k.."PopOut1Choice"..i]:SetScript("OnHide", function(self)
+				self:GetParent():SetNormalAtlas("charactercreate-customize-dropdownbox-open")
+				PlaySound(855, "Master")
+			end)
+		else
+			_G["ssoaOptions1Box"..k.."PopOut1Choice"..i]:SetParent(_G["ssoaOptions1Box"..k.."PopOut1Choice1"])
+			_G["ssoaOptions1Box"..k.."PopOut1Choice"..i]:SetPoint("TOP", _G["ssoaOptions1Box"..k.."PopOut1Choice"..i-1], "BOTTOM", 0, 0)
+			_G["ssoaOptions1Box"..k.."PopOut1Choice"..i]:Show()
+		end
+		_G["ssoaOptions1Box"..k.."PopOut1Choice"..i].Text:SetText(name)
+		_G["ssoaOptions1Box"..k.."PopOut1Choice"..i]:HookScript("OnClick", function(self, button, down)
+			if button == "LeftButton" and down == false then
+				if k == 1 then
+					SSOAsettings["Sold"]["Emotes"] = self.Text:GetText()
+					DoEmote(SSOAsettings["Sold"]["Emotes"], "none")
+				elseif k== 3 then
+					SSOAsettings["Won"]["Emotes"] = self.Text:GetText()
+					DoEmote(SSOAsettings["Won"]["Emotes"], "none")
+				elseif k == 5 then
+					SSOAsettings["BidPlaced"]["Emotes"] = self.Text:GetText()
+					DoEmote(SSOAsettings["BidPlaced"]["Emotes"], "none")
+				end
+				_G["ssoaOptions1Box"..k.."PopOut1"].Text:SetText(self.Text:GetText())
+				_G["ssoaOptions1Box"..k.."PopOut1Choice1"]:Hide()
+			end
+		end)
+	end
+	_G["ssoaOptions1Box"..k.."PopOut1"]:HookScript("OnEnter", function(self)
+		local parent = self:GetParent()
+		local word = parent.Title:GetText()
+		VDW.Tooltip_Show(self, prefixTip, string.format(L.W_EMOTE_TIP, word), C.Main)
+	end)
+	_G["ssoaOptions1Box"..k.."PopOut1"]:HookScript("OnLeave", function(self) VDW.Tooltip_Hide() end)
+	_G["ssoaOptions1Box"..k.."PopOut1"]:HookScript("OnClick", function(self, button, down)
+		if button == "LeftButton" and down == false then
+			if not _G["ssoaOptions1Box"..k.."PopOut1Choice1"]:IsShown() then
+				_G["ssoaOptions1Box"..k.."PopOut1Choice1"]:Show()
+			else
+				_G["ssoaOptions1Box"..k.."PopOut1Choice1"]:Hide()
+			end
+		end
+	end)
+end
+-- Pop out 1 Buttons sad emotes --
+for k = 2, 6, 2 do
+	_G["ssoaOptions1Box"..k.."PopOut1"].Title:SetText("Emotes")
+	ColoringPopOutButtons(k, 1)
+	for i, name in ipairs(sadEmotes) do
+		local btn = CreateFrame("Button", "ssoaOptions1Box"..k.."PopOut1Choice"..i, nil, "vdwPopOutButton")
+		_G["ssoaOptions1Box"..k.."PopOut1Choice"..i]:ClearAllPoints()
+		if i == 1 then
+			_G["ssoaOptions1Box"..k.."PopOut1Choice"..i]:SetParent(_G["ssoaOptions1Box"..k.."PopOut1"])
+			_G["ssoaOptions1Box"..k.."PopOut1Choice"..i]:SetPoint("TOP", "ssoaOptions1Box"..k.."PopOut1", "BOTTOM", 0, 8)
+			_G["ssoaOptions1Box"..k.."PopOut1Choice"..i]:SetScript("OnShow", function(self)
+				self:GetParent():SetNormalAtlas("charactercreate-customize-dropdownbox-hover")
+				PlaySound(855, "Master")
+			end)
+			_G["ssoaOptions1Box"..k.."PopOut1Choice"..i]:SetScript("OnHide", function(self)
+				self:GetParent():SetNormalAtlas("charactercreate-customize-dropdownbox-open")
+				PlaySound(855, "Master")
+			end)
+		else
+			_G["ssoaOptions1Box"..k.."PopOut1Choice"..i]:SetParent(_G["ssoaOptions1Box"..k.."PopOut1Choice1"])
+			_G["ssoaOptions1Box"..k.."PopOut1Choice"..i]:SetPoint("TOP", _G["ssoaOptions1Box"..k.."PopOut1Choice"..i-1], "BOTTOM", 0, 0)
+			_G["ssoaOptions1Box"..k.."PopOut1Choice"..i]:Show()
+		end
+		_G["ssoaOptions1Box"..k.."PopOut1Choice"..i].Text:SetText(name)
+		_G["ssoaOptions1Box"..k.."PopOut1Choice"..i]:HookScript("OnClick", function(self, button, down)
+			if button == "LeftButton" and down == false then
+				if k == 2 then
+					SSOAsettings["Expired"]["Emotes"] = self.Text:GetText()
+					DoEmote(SSOAsettings["Expired"]["Emotes"], "none")
+				elseif k== 4 then
+					SSOAsettings["Outbid"]["Emotes"] = self.Text:GetText()
+					DoEmote(SSOAsettings["Outbid"]["Emotes"], "none")
+				elseif k == 6 then
+					SSOAsettings["Removed"]["Emotes"] = self.Text:GetText()
+					DoEmote(SSOAsettings["Removed"]["Emotes"], "none")
+				end
+				_G["ssoaOptions1Box"..k.."PopOut1"].Text:SetText(self.Text:GetText())
+				_G["ssoaOptions1Box"..k.."PopOut1Choice1"]:Hide()
+			end
+		end)
+	end
+	_G["ssoaOptions1Box"..k.."PopOut1"]:HookScript("OnEnter", function(self)
+		local parent = self:GetParent()
+		local word = parent.Title:GetText()
+		VDW.Tooltip_Show(self, prefixTip, string.format(L.W_EMOTE_TIP, word), C.Main)
+	end)
+	_G["ssoaOptions1Box"..k.."PopOut1"]:HookScript("OnLeave", function(self) VDW.Tooltip_Hide() end)
+	_G["ssoaOptions1Box"..k.."PopOut1"]:HookScript("OnClick", function(self, button, down)
+		if button == "LeftButton" and down == false then
+			if not _G["ssoaOptions1Box"..k.."PopOut1Choice1"]:IsShown() then
+				_G["ssoaOptions1Box"..k.."PopOut1Choice1"]:Show()
+			else
+				_G["ssoaOptions1Box"..k.."PopOut1Choice1"]:Hide()
+			end
+		end
+	end)
+end
+-- Pop out 2 Buttons happy sounds --
+for k = 1, 5, 2 do
+	_G["ssoaOptions1Box"..k.."PopOut2"].Title:SetText(L.W_SOUNDS)
+	ColoringPopOutButtons(k, 2)
+	for i, name in ipairs(happySounds) do
+		local btn = CreateFrame("Button", "ssoaOptions1Box"..k.."PopOut2Choice"..i, nil, "vdwPopOutButton")
+		_G["ssoaOptions1Box"..k.."PopOut2Choice"..i]:ClearAllPoints()
+		if i == 1 then
+			_G["ssoaOptions1Box"..k.."PopOut2Choice"..i]:SetParent(_G["ssoaOptions1Box"..k.."PopOut2"])
+			_G["ssoaOptions1Box"..k.."PopOut2Choice"..i]:SetPoint("TOP", "ssoaOptions1Box"..k.."PopOut2", "BOTTOM", 0, 8)
+			_G["ssoaOptions1Box"..k.."PopOut2Choice"..i]:SetScript("OnShow", function(self)
+				self:GetParent():SetNormalAtlas("charactercreate-customize-dropdownbox-hover")
+				PlaySound(855, "Master")
+			end)
+			_G["ssoaOptions1Box"..k.."PopOut2Choice"..i]:SetScript("OnHide", function(self)
+				self:GetParent():SetNormalAtlas("charactercreate-customize-dropdownbox-open")
+				PlaySound(855, "Master")
+			end)
+		else
+			_G["ssoaOptions1Box"..k.."PopOut2Choice"..i]:SetParent(_G["ssoaOptions1Box"..k.."PopOut2Choice1"])
+			_G["ssoaOptions1Box"..k.."PopOut2Choice"..i]:SetPoint("TOP", _G["ssoaOptions1Box"..k.."PopOut2Choice"..i-1], "BOTTOM", 0, 0)
+			_G["ssoaOptions1Box"..k.."PopOut2Choice"..i]:Show()
+		end
+		_G["ssoaOptions1Box"..k.."PopOut2Choice"..i].Text:SetText(name)
+		_G["ssoaOptions1Box"..k.."PopOut2Choice"..i]:HookScript("OnClick", function(self, button, down)
+			if button == "LeftButton" and down == false then
+				if k == 1 then
+					SSOAsettings["Sold"]["Sounds"] = self.Text:GetText()
+					PlaySoundFile("Interface\\AddOns\\VDW\\media\\sounds\\"..SSOAsettings["Sold"]["Sounds"]..".mp3", "Master")
+				elseif k== 3 then
+					SSOAsettings["Won"]["Sounds"] = self.Text:GetText()
+					PlaySoundFile("Interface\\AddOns\\VDW\\media\\sounds\\"..SSOAsettings["Won"]["Sounds"]..".mp3", "Master")
+				elseif k == 5 then
+					SSOAsettings["BidPlaced"]["Sounds"] = self.Text:GetText()
+					PlaySoundFile("Interface\\AddOns\\VDW\\media\\sounds\\"..SSOAsettings["BidPlaced"]["Sounds"]..".mp3", "Master")
+				end
+				_G["ssoaOptions1Box"..k.."PopOut2"].Text:SetText(self.Text:GetText())
+				_G["ssoaOptions1Box"..k.."PopOut2Choice1"]:Hide()
+			end
+		end)
+	end
+	_G["ssoaOptions1Box"..k.."PopOut2"]:HookScript("OnEnter", function(self)
+		local parent = self:GetParent()
+		local word = parent.Title:GetText()
+		VDW.Tooltip_Show(self, prefixTip, string.format(L.W_SOUND_TIP, word), C.Main)
+	end)
+	_G["ssoaOptions1Box"..k.."PopOut2"]:HookScript("OnLeave", function(self) VDW.Tooltip_Hide() end)
+	_G["ssoaOptions1Box"..k.."PopOut2"]:HookScript("OnClick", function(self, button, down)
+		if button == "LeftButton" and down == false then
+			if not _G["ssoaOptions1Box"..k.."PopOut2Choice1"]:IsShown() then
+				_G["ssoaOptions1Box"..k.."PopOut2Choice1"]:Show()
+			else
+				_G["ssoaOptions1Box"..k.."PopOut2Choice1"]:Hide()
+			end
+		end
+	end)
+end
+-- Pop out 2 Buttons sad sounds --
+for k = 2, 6, 2 do
+	_G["ssoaOptions1Box"..k.."PopOut2"].Title:SetText(L.W_SOUNDS)
+	ColoringPopOutButtons(k, 2)
+	for i, name in ipairs(sadSounds) do
+		local btn = CreateFrame("Button", "ssoaOptions1Box"..k.."PopOut2Choice"..i, nil, "vdwPopOutButton")
+		_G["ssoaOptions1Box"..k.."PopOut2Choice"..i]:ClearAllPoints()
+		if i == 1 then
+			_G["ssoaOptions1Box"..k.."PopOut2Choice"..i]:SetParent(_G["ssoaOptions1Box"..k.."PopOut2"])
+			_G["ssoaOptions1Box"..k.."PopOut2Choice"..i]:SetPoint("TOP", "ssoaOptions1Box"..k.."PopOut2", "BOTTOM", 0, 8)
+			_G["ssoaOptions1Box"..k.."PopOut2Choice"..i]:SetScript("OnShow", function(self)
+				self:GetParent():SetNormalAtlas("charactercreate-customize-dropdownbox-hover")
+				PlaySound(855, "Master")
+			end)
+			_G["ssoaOptions1Box"..k.."PopOut2Choice"..i]:SetScript("OnHide", function(self)
+				self:GetParent():SetNormalAtlas("charactercreate-customize-dropdownbox-open")
+				PlaySound(855, "Master")
+			end)
+		else
+			_G["ssoaOptions1Box"..k.."PopOut2Choice"..i]:SetParent(_G["ssoaOptions1Box"..k.."PopOut2Choice1"])
+			_G["ssoaOptions1Box"..k.."PopOut2Choice"..i]:SetPoint("TOP", _G["ssoaOptions1Box"..k.."PopOut2Choice"..i-1], "BOTTOM", 0, 0)
+			_G["ssoaOptions1Box"..k.."PopOut2Choice"..i]:Show()
+		end
+		_G["ssoaOptions1Box"..k.."PopOut2Choice"..i].Text:SetText(name)
+		_G["ssoaOptions1Box"..k.."PopOut2Choice"..i]:HookScript("OnClick", function(self, button, down)
+			if button == "LeftButton" and down == false then
+				if k == 2 then
+					SSOAsettings["Expired"]["Sounds"] = self.Text:GetText()
+					PlaySoundFile("Interface\\AddOns\\VDW\\media\\sounds\\"..SSOAsettings["Expired"]["Sounds"]..".mp3", "Master")
+				elseif k== 4 then
+					SSOAsettings["Outbid"]["Sounds"] = self.Text:GetText()
+					PlaySoundFile("Interface\\AddOns\\VDW\\media\\sounds\\"..SSOAsettings["Outbid"]["Sounds"]..".mp3", "Master")
+				elseif k == 6 then
+					SSOAsettings["Removed"]["Sounds"] = self.Text:GetText()
+					PlaySoundFile("Interface\\AddOns\\VDW\\media\\sounds\\"..SSOAsettings["Removed"]["Sounds"]..".mp3", "Master")
+				end
+				_G["ssoaOptions1Box"..k.."PopOut2"].Text:SetText(self.Text:GetText())
+				_G["ssoaOptions1Box"..k.."PopOut2Choice1"]:Hide()
+			end
+		end)
+	end
+	_G["ssoaOptions1Box"..k.."PopOut2"]:HookScript("OnEnter", function(self)
+		local parent = self:GetParent()
+		local word = parent.Title:GetText()
+		VDW.Tooltip_Show(self, prefixTip, string.format(L.W_SOUND_TIP, word), C.Main)
+	end)
+	_G["ssoaOptions1Box"..k.."PopOut2"]:HookScript("OnLeave", function(self) VDW.Tooltip_Hide() end)
+	_G["ssoaOptions1Box"..k.."PopOut2"]:HookScript("OnClick", function(self, button, down)
+		if button == "LeftButton" and down == false then
+			if not _G["ssoaOptions1Box"..k.."PopOut2Choice1"]:IsShown() then
+				_G["ssoaOptions1Box"..k.."PopOut2Choice1"]:Show()
+			else
+				_G["ssoaOptions1Box"..k.."PopOut2Choice1"]:Hide()
+			end
+		end
+	end)
+end
+-- check button message in the chat --
+for i = 1, 6, 1 do
+	_G["ssoaOptions1Box"..i.."CheckButton1"].Text:SetWidth(ssoaOptions1Box1:GetWidth()*0.8)
+	_G["ssoaOptions1Box"..i.."CheckButton1"].Text:SetText(L.W_CHAT)
+	_G["ssoaOptions1Box"..i.."CheckButton1"]:SetScript("OnEnter", function(self)
+		VDW.Tooltip_Show(self, prefixTip, L.W_CHAT_TIP, C.Main)
+	end)
+	_G["ssoaOptions1Box"..i.."CheckButton1"]:HookScript("OnLeave", function(self) VDW.Tooltip_Hide() end)
+	_G["ssoaOptions1Box"..i.."CheckButton1"]:HookScript("OnClick", function (self, button)
+		if button == "LeftButton" then
+			if self:GetChecked() == true then
+				if i == 1 then
+					SSOAsettings["Sold"]["Chat"] = true
+				elseif i == 2 then
+					SSOAsettings["Expired"]["Chat"] = true
+				elseif i == 3 then
+					SSOAsettings["Won"]["Chat"] = true
+				elseif i == 4 then
+					SSOAsettings["Outbid"]["Chat"] = true
+				elseif i == 5 then
+					SSOAsettings["BidPlaced"]["Chat"] = true
+				elseif i == 6 then
+					SSOAsettings["Removed"]["Chat"] = true
+				end
+				self.Text:SetTextColor(C.Main:GetRGB())
+				PlaySound(858, "Master")
+			elseif self:GetChecked() == false then
+				if i == 1 then
+					SSOAsettings["Sold"]["Chat"] = false
+				elseif i == 2 then
+					SSOAsettings["Expired"]["Chat"] = false
+				elseif i == 3 then
+					SSOAsettings["Won"]["Chat"] = false
+				elseif i == 4 then
+					SSOAsettings["Outbid"]["Chat"] = false
+				elseif i == 5 then
+					SSOAsettings["BidPlaced"]["Chat"] = false
+				elseif i == 6 then
+					SSOAsettings["Removed"]["Chat"] = false
+				end
+				self.Text:SetTextColor(0.35, 0.35, 0.35, 0.8)
+				PlaySound(858, "Master")
+			end
+		end
+	end)
+end
+-- saved variables --
 local function CheckSavedVariables()
-	if SSoAsell["ChatFrame"] == 0 and SSoAsell["SsoaFrame"] == 0 then
-		ssoaOptions1Box1PopOut1:SetText(ssoaOptions1Box1PopOut1Choice0.Text:GetText())
-	elseif SSoAsell["ChatFrame"] == 1 and SSoAsell["SsoaFrame"] == 0 then
-		ssoaOptions1Box1PopOut1:SetText(ssoaOptions1Box1PopOut1Choice1.Text:GetText())
-	elseif SSoAsell["ChatFrame"] == 0 and SSoAsell["SsoaFrame"] == 1 then
-		ssoaOptions1Box1PopOut1:SetText(ssoaOptions1Box1PopOut1Choice2.Text:GetText())
-	elseif SSoAsell["ChatFrame"] == 1 and SSoAsell["SsoaFrame"] == 1 then
-		ssoaOptions1Box1PopOut1:SetText(ssoaOptions1Box1PopOut1Choice3.Text:GetText())
+	ssoaOptions1Box1PopOut1.Text:SetText(SSOAsettings["Sold"]["Emotes"])
+	ssoaOptions1Box2PopOut1.Text:SetText(SSOAsettings["Expired"]["Emotes"])
+	ssoaOptions1Box3PopOut1.Text:SetText(SSOAsettings["Won"]["Emotes"])
+	ssoaOptions1Box4PopOut1.Text:SetText(SSOAsettings["Outbid"]["Emotes"])
+	ssoaOptions1Box5PopOut1.Text:SetText(SSOAsettings["BidPlaced"]["Emotes"])
+	ssoaOptions1Box6PopOut1.Text:SetText(SSOAsettings["Removed"]["Emotes"])
+	ssoaOptions1Box1PopOut2.Text:SetText(SSOAsettings["Sold"]["Sounds"])
+	ssoaOptions1Box2PopOut2.Text:SetText(SSOAsettings["Expired"]["Sounds"])
+	ssoaOptions1Box3PopOut2.Text:SetText(SSOAsettings["Won"]["Sounds"])
+	ssoaOptions1Box4PopOut2.Text:SetText(SSOAsettings["Outbid"]["Sounds"])
+	ssoaOptions1Box5PopOut2.Text:SetText(SSOAsettings["BidPlaced"]["Sounds"])
+	ssoaOptions1Box6PopOut2.Text:SetText(SSOAsettings["Removed"]["Sounds"])
+	if SSOAsettings["Sold"]["Chat"] then
+		ssoaOptions1Box1CheckButton1:SetChecked(true)
+		ssoaOptions1Box1CheckButton1.Text:SetTextColor(C.Main:GetRGB())
+	else
+		ssoaOptions1Box1CheckButton1:SetChecked(false)
+		ssoaOptions1Box1CheckButton1.Text:SetTextColor(0.35, 0.35, 0.35, 0.8)
 	end
-	if SSoAexpire["ChatFrame"] == 0 and SSoAexpire["SsoaFrame"] == 0 then
-		ssoaOptions1Box2PopOut1:SetText(ssoaOptions1Box2PopOut1Choice0.Text:GetText())
-	elseif SSoAexpire["ChatFrame"] == 1 and SSoAexpire["SsoaFrame"] == 0 then
-		ssoaOptions1Box2PopOut1:SetText(ssoaOptions1Box2PopOut1Choice1.Text:GetText())
-	elseif SSoAexpire["ChatFrame"] == 0 and SSoAexpire["SsoaFrame"] == 1 then
-		ssoaOptions1Box2PopOut1:SetText(ssoaOptions1Box2PopOut1Choice2.Text:GetText())
-	elseif SSoAexpire["ChatFrame"] == 1 and SSoAexpire["SsoaFrame"] == 1 then
-		ssoaOptions1Box2PopOut1:SetText(ssoaOptions1Box2PopOut1Choice3.Text:GetText())
+	if SSOAsettings["Expired"]["Chat"] then
+		ssoaOptions1Box2CheckButton1:SetChecked(true)
+		ssoaOptions1Box2CheckButton1.Text:SetTextColor(C.Main:GetRGB())
+	else
+		ssoaOptions1Box2CheckButton1:SetChecked(false)
+		ssoaOptions1Box2CheckButton1.Text:SetTextColor(0.35, 0.35, 0.35, 0.8)
 	end
-	ssoaOptions1Box1PopOut2:SetText(SSoAsell["Sound"])
-	ssoaOptions1Box1PopOut3:SetText(SSoAsell["Emote"])
-	ssoaOptions1Box2PopOut2:SetText(SSoAexpire["Sound"])
-	ssoaOptions1Box2PopOut3:SetText(SSoAexpire["Emote"])
+	if SSOAsettings["Won"]["Chat"] then
+		ssoaOptions1Box3CheckButton1:SetChecked(true)
+		ssoaOptions1Box3CheckButton1.Text:SetTextColor(C.Main:GetRGB())
+	else
+		ssoaOptions1Box3CheckButton1:SetChecked(false)
+		ssoaOptions1Box3CheckButton1.Text:SetTextColor(0.35, 0.35, 0.35, 0.8)
+	end
+	if SSOAsettings["Outbid"]["Chat"] then
+		ssoaOptions1Box4CheckButton1:SetChecked(true)
+		ssoaOptions1Box4CheckButton1.Text:SetTextColor(C.Main:GetRGB())
+	else
+		ssoaOptions1Box4CheckButton1:SetChecked(false)
+		ssoaOptions1Box4CheckButton1.Text:SetTextColor(0.35, 0.35, 0.35, 0.8)
+	end
+	if SSOAsettings["BidPlaced"]["Chat"] then
+		ssoaOptions1Box5CheckButton1:SetChecked(true)
+		ssoaOptions1Box5CheckButton1.Text:SetTextColor(C.Main:GetRGB())
+	else
+		ssoaOptions1Box5CheckButton1:SetChecked(false)
+		ssoaOptions1Box5CheckButton1.Text:SetTextColor(0.35, 0.35, 0.35, 0.8)
+	end
+	if SSOAsettings["Removed"]["Chat"] then
+		ssoaOptions1Box6CheckButton1:SetChecked(true)
+		ssoaOptions1Box6CheckButton1.Text:SetTextColor(C.Main:GetRGB())
+	else
+		ssoaOptions1Box6CheckButton1:SetChecked(false)
+		ssoaOptions1Box6CheckButton1.Text:SetTextColor(0.35, 0.35, 0.35, 0.8)
+	end
 end
--- Box 1 --
--- pop out 1, Selling Chat --
--- naming --
-ssoaOptions1Box1PopOut1Choice0.Text:SetText("None")
-ssoaOptions1Box1PopOut1Choice1.Text:SetText("Deafult Chat")
-ssoaOptions1Box1PopOut1Choice2.Text:SetText("SSoA Frame")
-ssoaOptions1Box1PopOut1Choice3.Text:SetText("Both of them")
--- parent & sort --
-for i = 1, 3, 1 do
-	_G["ssoaOptions1Box1PopOut1Choice"..i]:SetParent(ssoaOptions1Box1PopOut1Choice0)
-	_G["ssoaOptions1Box1PopOut1Choice"..i]:SetPoint("TOP", _G["ssoaOptions1Box1PopOut1Choice"..i-1], "BOTTOM", 0, 0)
-end
--- enter --
-ssoaOptions1Box1PopOut1:SetScript("OnEnter", function(self)
-	ssoaEnteringMenus(self)
-	GameTooltip:SetText(ssoaMainColor:WrapTextInColorCode("|A:"..C_AddOns.GetAddOnMetadata("SSoA", "IconAtlas")..":16:16|a "..C_AddOns.GetAddOnMetadata("SSoA", "Title")).."|nWhere would you like,|nthe notification to be shown?") 
-end)
--- click --
-for i = 0, 3, 1 do
-	_G["ssoaOptions1Box1PopOut1Choice"..i]:HookScript("OnClick", function(self, button, down)
-		ssoaOptions1Box1PopOut1.Text:SetText(self.Text:GetText())
-		ssoaOptions1Box1PopOut1Choice0:Hide()
-		if self.Text:GetText() == "None" then
-			SSoAsell["ChatFrame"] = 0
-			SSoAsell["SsoaFrame"] = 0
-		elseif self.Text:GetText() == "Deafult Chat" then
-			SSoAsell["ChatFrame"] = 1
-			SSoAsell["SsoaFrame"] = 0
-		elseif self.Text:GetText() == "SSoA Frame" then
-			SSoAsell["ChatFrame"] = 0
-			SSoAsell["SsoaFrame"] = 1
-		elseif self.Text:GetText() == "Both of them" then
-			SSoAsell["ChatFrame"] = 1
-			SSoAsell["SsoaFrame"] = 1
-		end
-	end)
-end
--- Box 1, pop out 2, Selling Sound --
--- naming --
-ssoaOptions1Box1PopOut2Choice0.Text:SetText("None")
-ssoaOptions1Box1PopOut2Choice1.Text:SetText("Auction House's Sound")
-ssoaOptions1Box1PopOut2Choice2.Text:SetText("Cash Register Machine")
-ssoaOptions1Box1PopOut2Choice3.Text:SetText("Coins Sound")
--- parent & sort --
-for i = 1, 3, 1 do
-	_G["ssoaOptions1Box1PopOut2Choice"..i]:SetParent(ssoaOptions1Box1PopOut2Choice0)
-	_G["ssoaOptions1Box1PopOut2Choice"..i]:SetPoint("TOP", _G["ssoaOptions1Box1PopOut2Choice"..i-1], "BOTTOM", 0, 0)
-end
--- enter --
-ssoaOptions1Box1PopOut2:SetScript("OnEnter", function(self)
-	ssoaEnteringMenus(self)
-	GameTooltip:SetText("|A:"..C_AddOns.GetAddOnMetadata("SSoA", "IconAtlas")..":16:16|a "..ssoaMainColor:WrapTextInColorCode(C_AddOns.GetAddOnMetadata("SSoA", "Title")).."|nWhich sound would you like to hear,|nwhen you sell an item at AH?") 
-end)
--- clicking --
-for i = 0, 3, 1 do
-	_G["ssoaOptions1Box1PopOut2Choice"..i]:HookScript("OnClick", function(self, button, down)
-		ssoaOptions1Box1PopOut2.Text:SetText(self.Text:GetText())
-		SSoAsell["Sound"] = self.Text:GetText()
-		ssoaOptions1Box1PopOut2Choice0:Hide()
-		if SSoAsell["Sound"] == "None" then
-			ssoaTime = GameTime_GetTime(false)
-			DEFAULT_CHAT_FRAME:AddMessage(ssoaTime.."|A:"..C_AddOns.GetAddOnMetadata("SSoA", "IconAtlas")..":16:16|a ["..ssoaMainColor:WrapTextInColorCode(C_AddOns.GetAddOnMetadata("SSoA", "Title")).."] There will be no sound when your auction is sold!")
-		elseif SSoAsell["Sound"] == "Auction House's Sound" then
-			PlaySound(5275, "Master")
-		elseif SSoAsell["Sound"] == "Cash Register Machine" then
-			PlaySoundFile("Interface\\AddOns\\SSoA\\Sounds\\CashRegisterSound.mp3", "Master")
-		elseif SSoAsell["Sound"] == "Coins Sound" then
-			PlaySound(120, "Master")
-		end
-	end)
-end
--- Box 1, pop out 3, Selling Emote --
--- naming --
-ssoaOptions1Box1PopOut3Choice0.Text:SetText("None")
-ssoaOptions1Box1PopOut3Choice1.Text:SetText("Cheer")
-ssoaOptions1Box1PopOut3Choice2.Text:SetText("Congratulate")
-ssoaOptions1Box1PopOut3Choice3.Text:SetText("Dance")
-ssoaOptions1Box1PopOut3Choice4.Text:SetText("WHOA")
--- parent & sort --
-for i = 1, 4, 1 do
-	_G["ssoaOptions1Box1PopOut3Choice"..i]:SetParent(ssoaOptions1Box1PopOut3Choice0)
-	_G["ssoaOptions1Box1PopOut3Choice"..i]:SetPoint("TOP", _G["ssoaOptions1Box1PopOut3Choice"..i-1], "BOTTOM", 0, 0)
-end
--- enter --
-ssoaOptions1Box1PopOut3:SetScript("OnEnter", function(self)
-	ssoaEnteringMenus(self)
-	GameTooltip:SetText("|A:"..C_AddOns.GetAddOnMetadata("SSoA", "IconAtlas")..":16:16|a "..ssoaMainColor:WrapTextInColorCode(C_AddOns.GetAddOnMetadata("SSoA", "Title")).."|nWhich eMote would you like to do,|nwhen you sell an item at AH?") 
-end)
--- click --
-for i = 0, 4, 1 do
-	_G["ssoaOptions1Box1PopOut3Choice"..i]:HookScript("OnClick", function(self, button, down)
-		ssoaOptions1Box1PopOut3.Text:SetText(self.Text:GetText())
-		SSoAsell["Emote"] = self.Text:GetText()
-		ssoaOptions1Box1PopOut3Choice0:Hide()
-		if SSoAsell["Emote"] == "None" then
-			ssoaTime = GameTime_GetTime(false)
-			DEFAULT_CHAT_FRAME:AddMessage(ssoaTime.."|A:"..C_AddOns.GetAddOnMetadata("SSoA", "IconAtlas")..":16:16|a ["..ssoaMainColor:WrapTextInColorCode(C_AddOns.GetAddOnMetadata("SSoA", "Title")).."] There will be no eMote when your auction is sold!")
-		elseif SSoAsell["Emote"] == "Cheer" then
-			DoEmote("CHEER","none")
-		elseif SSoAsell["Emote"] == "Congratulate" then
-			DoEmote("Congratulate","none")
-		elseif SSoAsell["Emote"] == "Dance" then
-			DoEmote("Dance","none")
-		elseif SSoAsell["Emote"] == "WHOA" then
-			DoEmote("WHOA","none")
-		end
-	end)
-end
--- Box 2, pop out 1, Expired Chat --
--- naming --
-ssoaOptions1Box2PopOut1Choice0.Text:SetText("None")
-ssoaOptions1Box2PopOut1Choice1.Text:SetText("Deafult Chat")
-ssoaOptions1Box2PopOut1Choice2.Text:SetText("SSoA Frame")
-ssoaOptions1Box2PopOut1Choice3.Text:SetText("Both of them")
--- parent & sort --
-for i = 1, 3, 1 do
-	_G["ssoaOptions1Box2PopOut1Choice"..i]:SetParent(ssoaOptions1Box2PopOut1Choice0)
-	_G["ssoaOptions1Box2PopOut1Choice"..i]:SetPoint("TOP", _G["ssoaOptions1Box2PopOut1Choice"..i-1], "BOTTOM", 0, 0)
-end
--- enter --
-ssoaOptions1Box2PopOut1:SetScript("OnEnter", function(self)
-	ssoaEnteringMenus(self)
-	GameTooltip:SetText("|A:"..C_AddOns.GetAddOnMetadata("SSoA", "IconAtlas")..":16:16|a "..ssoaMainColor:WrapTextInColorCode(C_AddOns.GetAddOnMetadata("SSoA", "Title")).."|nWhere would you like,|nthe notification to be shown?") 
-end)
--- click --
-for i = 0, 3, 1 do
-	_G["ssoaOptions1Box2PopOut1Choice"..i]:HookScript("OnClick", function(self, button, down)
-		if button == "LeftButton" and down == false then
-			ssoaOptions1Box2PopOut1.Text:SetText(self.Text:GetText())
-			ssoaOptions1Box2PopOut1Choice0:Hide()
-			if self.Text:GetText() == "None" then
-				SSoAexpire["ChatFrame"] = 0
-				SSoAexpire["SsoaFrame"] = 0
-			elseif self.Text:GetText() == "Deafult Chat" then
-				SSoAexpire["ChatFrame"] = 1
-				SSoAexpire["SsoaFrame"] = 0
-			elseif self.Text:GetText() == "SSoA Frame" then
-				SSoAexpire["ChatFrame"] = 0
-				SSoAexpire["SsoaFrame"] = 1
-			elseif self.Text:GetText() == "Both of them" then
-				SSoAexpire["ChatFrame"] = 1
-				SSoAexpire["SsoaFrame"] = 1
-			end
-		end
-	end)
-end
--- Box 2, pop out 2, Expired Sound --
--- naming --
-ssoaOptions1Box2PopOut2Choice0.Text:SetText("None")
-ssoaOptions1Box2PopOut2Choice1.Text:SetText("Zong")
-ssoaOptions1Box2PopOut2Choice2.Text:SetText("Bells")
-ssoaOptions1Box2PopOut2Choice3.Text:SetText("Mission Fail")
--- parent & sort --
-for i = 1, 3, 1 do
-	_G["ssoaOptions1Box2PopOut2Choice"..i]:SetParent(ssoaOptions1Box2PopOut2Choice0)
-	_G["ssoaOptions1Box2PopOut2Choice"..i]:SetPoint("TOP", _G["ssoaOptions1Box2PopOut2Choice"..i-1], "BOTTOM", 0, 0)
-end
--- enter --
-ssoaOptions1Box2PopOut2:SetScript("OnEnter", function(self)
-	ssoaEnteringMenus(self)
-	GameTooltip:SetText(ssoaMainColor:WrapTextInColorCode("|A:"..C_AddOns.GetAddOnMetadata("SSoA", "IconAtlas")..":16:16|a "..C_AddOns.GetAddOnMetadata("SSoA", "Title")).."|nWhich sound would you like to hear,|nwhen an auction has been expired?") 
-end)
--- click --
-for i = 0, 3, 1 do
-	_G["ssoaOptions1Box2PopOut2Choice"..i]:HookScript("OnClick", function(self, button, down)
-		if button == "LeftButton" and down == false then
-			ssoaOptions1Box2PopOut2.Text:SetText(self.Text:GetText())
-			SSoAexpire["Sound"] = self.Text:GetText()
-			ssoaOptions1Box2PopOut2Choice0:Hide()
-			if SSoAexpire["Sound"] == "None" then
-				ssoaTime = GameTime_GetTime(false)
-				DEFAULT_CHAT_FRAME:AddMessage(ssoaTime.."|A:"..C_AddOns.GetAddOnMetadata("SSoA", "IconAtlas")..":16:16|a ["..ssoaMainColor:WrapTextInColorCode(C_AddOns.GetAddOnMetadata("SSoA", "Title")).."] There will be no sound when your auction is expired!")
-			elseif SSoAexpire["Sound"] == "Zong" then
-				PlaySoundFile("Interface\\AddOns\\SSoA\\Sounds\\Zong.mp3", "Master")
-			elseif SSoAexpire["Sound"] == "Bells" then
-				PlaySoundFile("Interface\\AddOns\\SSoA\\Sounds\\Bells.mp3", "Master")
-			elseif SSoAexpire["Sound"] == "Mission Fail" then
-				PlaySound(43503, "Master")
-			end
-		end
-	end)
-end
--- Box 2, pop out 3, Expired Emote --
--- naming --
-ssoaOptions1Box2PopOut3Choice0.Text:SetText("None")
-ssoaOptions1Box2PopOut3Choice1.Text:SetText("Mourn")
-ssoaOptions1Box2PopOut3Choice2.Text:SetText("Angry")
-ssoaOptions1Box2PopOut3Choice3.Text:SetText("Violin")
-ssoaOptions1Box2PopOut3Choice4.Text:SetText("OOPS")
--- paret & sort --
-for i = 1, 4, 1 do
-	_G["ssoaOptions1Box2PopOut3Choice"..i]:SetParent(ssoaOptions1Box2PopOut3Choice0)
-	_G["ssoaOptions1Box2PopOut3Choice"..i]:SetPoint("TOP", _G["ssoaOptions1Box2PopOut3Choice"..i-1], "BOTTOM", 0, 0)
-end
--- enter --
-ssoaOptions1Box2PopOut3:SetScript("OnEnter", function(self)
-	ssoaEnteringMenus(self)
-	GameTooltip:SetText("|A:"..C_AddOns.GetAddOnMetadata("SSoA", "IconAtlas")..":16:16|a "..ssoaMainColor:WrapTextInColorCode(C_AddOns.GetAddOnMetadata("SSoA", "Title")).."|nWhich eMote would you like to do,|nwhen an auction has been expired?") 
-end)
--- click --
-for i = 0, 4, 1 do
-	_G["ssoaOptions1Box2PopOut3Choice"..i]:HookScript("OnClick", function(self, button, down)
-		if button == "LeftButton" and down == false then
-			ssoaOptions1Box2PopOut3.Text:SetText(self.Text:GetText())
-			SSoAexpire["Emote"] = self.Text:GetText()
-			ssoaOptions1Box2PopOut3Choice0:Hide()
-			if SSoAexpire["Emote"] == "None" then
-				ssoaTime = GameTime_GetTime(false)
-				DEFAULT_CHAT_FRAME:AddMessage(ssoaTime.."|A:"..C_AddOns.GetAddOnMetadata("SSoA", "IconAtlas")..":16:16|a ["..ssoaMainColor:WrapTextInColorCode(C_AddOns.GetAddOnMetadata("SSoA", "Title")).."] There will be no eMote when your auction is expired!")
-			elseif SSoAexpire["Emote"] == "Mourn" then
-				DoEmote("MOURN","none")
-			elseif SSoAexpire["Emote"] == "Angry" then
-				DoEmote("Angry","none")
-			elseif SSoAexpire["Emote"] == "Violin" then
-				DoEmote("Violin","none")
-			elseif SSoAexpire["Emote"] == "OOPS" then
-				DoEmote("OOPS","none")
-			end
-		end
-	end)
-end
--- drop down --
-ssoaClickPopOut(ssoaOptions1Box1PopOut1, ssoaOptions1Box1PopOut1Choice0)
--- leave --
-ssoaOptions1Box1PopOut1:SetScript("OnLeave", ssoaLeavingMenus)
--- drop down --
-ssoaClickPopOut(ssoaOptions1Box1PopOut2, ssoaOptions1Box1PopOut2Choice0)
--- leave --
-ssoaOptions1Box1PopOut2:SetScript("OnLeave", ssoaLeavingMenus)
--- drop down --
-ssoaClickPopOut(ssoaOptions1Box1PopOut3, ssoaOptions1Box1PopOut3Choice0)
--- leave --
-ssoaOptions1Box1PopOut3:SetScript("OnLeave", ssoaLeavingMenus)
--- drop down --
-ssoaClickPopOut(ssoaOptions1Box2PopOut1, ssoaOptions1Box2PopOut1Choice0)
--- leave --
-ssoaOptions1Box2PopOut1:SetScript("OnLeave", ssoaLeavingMenus)
--- drop down --
-ssoaClickPopOut(ssoaOptions1Box2PopOut2, ssoaOptions1Box2PopOut2Choice0)
--- leave --
-ssoaOptions1Box2PopOut2:SetScript("OnLeave", ssoaLeavingMenus)
--- drop down --
-ssoaClickPopOut(ssoaOptions1Box2PopOut3, ssoaOptions1Box2PopOut3Choice0)
--- leave --
-ssoaOptions1Box2PopOut3:SetScript("OnLeave", ssoaLeavingMenus)
-
--- Show the panel --
+-- Show the option panel --
 ssoaOptions1:HookScript("OnShow", function(self)
-	CheckSavedVariables()
-	ssoaOptions00Tab1.Text:SetTextColor(ssoaHighColor:GetRGB())
-	ssoaOptions00Tab2.Text:SetTextColor(ssoaMainColor:GetRGB())
-	ssoaOptions00Tab3.Text:SetTextColor(ssoaMainColor:GetRGB())
+	ssoaOptions00Tab2.Text:SetTextColor(0.4, 0.4, 0.4, 1)
 	if ssoaOptions2:IsShown() then ssoaOptions2:Hide() end
-	if ssoaOptions3:IsShown() then ssoaOptions3:Hide() end
+	ssoaOptions00Tab1.Text:SetTextColor(C.High:GetRGB())
+	CheckSavedVariables()
 end)
+-- Background of the tabs frame --
+local OptionsW = ssoaOptions1:GetWidth()
+ssoaOptions00:SetWidth(ssoaOptions00Tab1:GetWidth() + OptionsW)
+ssoaOptions00:SetHeight(ssoaOptions1:GetHeight())
+ssoaOptions00.BGtexture:ClearAllPoints()
+ssoaOptions00.BGtexture:SetPoint("TOPRIGHT", ssoaOptions00, "TOPRIGHT", 0, 0)
+ssoaOptions00.BGtexture:SetPoint("BOTTOMLEFT", ssoaOptions00, "BOTTOMLEFT", OptionsW, 0)
+ssoaOptions00.BGtexture:SetTexture("Interface\\BlackMarket\\BlackMarketBackground-Tile.blp", "CLAMP", "CLAMP", "NEAREST")
+ssoaOptions00.BGtexture:SetDesaturation(0.3)
+ssoaOptions00.BGtexture:SetGradient("VERTICAL", C.NoHigh, C.High)

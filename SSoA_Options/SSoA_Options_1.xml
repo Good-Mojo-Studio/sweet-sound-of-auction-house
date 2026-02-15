@@ -1,93 +1,163 @@
-<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\FrameXML\UI.xsd">
-	<Frame name="ssoaOptions1" parent="UIParent" inherits="ssoaOptionsPanel">
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/ https://raw.githubusercontent.com/Gethe/wow-ui-source/live/Interface/AddOns/Blizzard_SharedXML/UI.xsd">
+	<Frame name="ssoaOptions1" inherits="vdwOptionsPanel" parent="UIParent">
 		<Frames>
-<!-- First Options Box Sell Options -->
-			<Frame name="$parentBox1" inherits="ssoaOptionsBox">
+<!-- Options Box 1 auction sold -->
+			<Frame name="$parentBox1" inherits="vdwOptionsBox">
 				<Anchors>
-					<Anchor point="TOPLEFT" relativePoint="TOPLEFT" x ="0" y="-64"/>
+					<Anchor point="TOPLEFT" relativePoint="TOPLEFT" x ="8" y="-64"/>
 				</Anchors>
-				<Size x="360" y="96"/>
 				<Frames>
-<!-- Pop Out Button 1 Chat Notification -->
-					<Button name="$parentPopOut1" inherits="ssoaPopOut">
+<!-- Pop Out 1 sounds -->
+					<Button name="$parentPopOut1" inherits="vdwPopOut">
 						<Anchors>
-							<Anchor point="BOTTOM" relativePoint="BOTTOM" x="0" y="8"/>
+							<Anchor point="TOPLEFT" relativePoint="TOPLEFT" x="4" y="-40"/>
 						</Anchors>
-						<Frames>
-							<Button name="$parentChoice1" inherits="ssoaPopOutButton"/>
-							<Button name="$parentChoice2" inherits="ssoaPopOutButton"/>
-							<Button name="$parentChoice3" inherits="ssoaPopOutButton"/>
-						</Frames>
 					</Button>
-<!-- Pop Out Button 2 Sound Notification -->
-					<Button name="$parentPopOut2" inherits="ssoaPopOut">
+<!-- Pop Out 2 emotes -->
+					<Button name="$parentPopOut2" inherits="vdwPopOut">
 						<Anchors>
-							<Anchor point="BOTTOMRIGHT" relativeTo="$parentPopOut1" relativePoint="TOP" x="0" y="0"/>
+							<Anchor point="LEFT" relativeTo="$parentPopOut1" relativePoint="RIGHT" x="8" y="0"/>
 						</Anchors>
-						<Frames>
-							<Button name="$parentChoice1" inherits="ssoaPopOutButton"/>
-							<Button name="$parentChoice2" inherits="ssoaPopOutButton"/>
-							<Button name="$parentChoice3" inherits="ssoaPopOutButton"/>
-						</Frames>
 					</Button>
-<!-- Pop Out Button 3 eMote Notification -->
-					<Button name="$parentPopOut3" inherits="ssoaPopOut">
+<!-- Check Button 1, chat message -->
+					<CheckButton name="$parentCheckButton1" inherits="vdwCheckButton">
 						<Anchors>
-							<Anchor point="BOTTOMLEFT" relativeTo="$parentPopOut1" relativePoint="TOP" x="0" y="0"/>
+							<Anchor point="TOPLEFT" relativeTo="$parentPopOut1" relativePoint="BOTTOMLEFT" x="4" y="0"/>
 						</Anchors>
-						<Frames>
-							<Button name="$parentChoice1" inherits="ssoaPopOutButton"/>
-							<Button name="$parentChoice2" inherits="ssoaPopOutButton"/>
-							<Button name="$parentChoice3" inherits="ssoaPopOutButton"/>
-							<Button name="$parentChoice4" inherits="ssoaPopOutButton"/>
-						</Frames>
-					</Button>
+					</CheckButton>
 				</Frames>
 			</Frame>
-<!-- Second Options Box Expire Options -->
-			<Frame name="$parentBox2" inherits="ssoaOptionsBox">
+<!-- Options Box 2 auction expired -->
+			<Frame name="$parentBox2" inherits="vdwOptionsBox">
 				<Anchors>
-					<Anchor point="TOPRIGHT" relativePoint="TOPRIGHT" x ="0" y="-64"/>
+					<Anchor point="TOPLEFT" relativePoint="TOPLEFT" x ="8" y="-64"/>
 				</Anchors>
-				<Size x="360" y="96"/>
 				<Frames>
-<!-- Pop Out Button 1 Chat Notification -->
-					<Button name="$parentPopOut1" inherits="ssoaPopOut">
+<!-- Pop Out 1 sounds -->
+					<Button name="$parentPopOut1" inherits="vdwPopOut">
 						<Anchors>
-							<Anchor point="BOTTOM" relativePoint="BOTTOM" x="0" y="8"/>
+							<Anchor point="TOPLEFT" relativePoint="TOPLEFT" x="4" y="-40"/>
 						</Anchors>
-						<Frames>
-							<Button name="$parentChoice1" inherits="ssoaPopOutButton"/>
-							<Button name="$parentChoice2" inherits="ssoaPopOutButton"/>
-							<Button name="$parentChoice3" inherits="ssoaPopOutButton"/>
-						</Frames>
 					</Button>
-<!-- Pop Out Button 2 Sound Notification -->
-					<Button name="$parentPopOut2" inherits="ssoaPopOut">
+<!-- Pop Out 2 emotes -->
+					<Button name="$parentPopOut2" inherits="vdwPopOut">
 						<Anchors>
-							<Anchor point="BOTTOMRIGHT" relativeTo="$parentPopOut1" relativePoint="TOP" x="0" y="0"/>
+							<Anchor point="LEFT" relativeTo="$parentPopOut1" relativePoint="RIGHT" x="8" y="0"/>
 						</Anchors>
-						<Frames>
-							<Button name="$parentChoice1" inherits="ssoaPopOutButton"/>
-							<Button name="$parentChoice2" inherits="ssoaPopOutButton"/>
-							<Button name="$parentChoice3" inherits="ssoaPopOutButton"/>
-						</Frames>
 					</Button>
-<!-- Pop Out Button 3 eMote Notification -->
-					<Button name="$parentPopOut3" inherits="ssoaPopOut">
+<!-- Check Button 1, chat message -->
+					<CheckButton name="$parentCheckButton1" inherits="vdwCheckButton">
 						<Anchors>
-							<Anchor point="BOTTOMLEFT" relativeTo="$parentPopOut1" relativePoint="TOP" x="0" y="0"/>
+							<Anchor point="TOPLEFT" relativeTo="$parentPopOut1" relativePoint="BOTTOMLEFT" x="4" y="0"/>
 						</Anchors>
-						<Frames>
-							<Button name="$parentChoice1" inherits="ssoaPopOutButton"/>
-							<Button name="$parentChoice2" inherits="ssoaPopOutButton"/>
-							<Button name="$parentChoice3" inherits="ssoaPopOutButton"/>
-							<Button name="$parentChoice4" inherits="ssoaPopOutButton"/>
-						</Frames>
+					</CheckButton>
+				</Frames>
+			</Frame>
+<!-- Options Box 3 auction won -->
+			<Frame name="$parentBox3" inherits="vdwOptionsBox">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativePoint="TOPLEFT" x ="8" y="-64"/>
+				</Anchors>
+				<Frames>
+<!-- Pop Out 1 sounds -->
+					<Button name="$parentPopOut1" inherits="vdwPopOut">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativePoint="TOPLEFT" x="4" y="-40"/>
+						</Anchors>
 					</Button>
+<!-- Pop Out 2 emotes -->
+					<Button name="$parentPopOut2" inherits="vdwPopOut">
+						<Anchors>
+							<Anchor point="LEFT" relativeTo="$parentPopOut1" relativePoint="RIGHT" x="8" y="0"/>
+						</Anchors>
+					</Button>
+<!-- Check Button 1, chat message -->
+					<CheckButton name="$parentCheckButton1" inherits="vdwCheckButton">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="$parentPopOut1" relativePoint="BOTTOMLEFT" x="4" y="0"/>
+						</Anchors>
+					</CheckButton>
+				</Frames>
+			</Frame>
+<!-- Options Box 4 auction outbid -->
+			<Frame name="$parentBox4" inherits="vdwOptionsBox">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativePoint="TOPLEFT" x ="8" y="-64"/>
+				</Anchors>
+				<Frames>
+<!-- Pop Out 1 sounds -->
+					<Button name="$parentPopOut1" inherits="vdwPopOut">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativePoint="TOPLEFT" x="4" y="-40"/>
+						</Anchors>
+					</Button>
+<!-- Pop Out 2 emotes -->
+					<Button name="$parentPopOut2" inherits="vdwPopOut">
+						<Anchors>
+							<Anchor point="LEFT" relativeTo="$parentPopOut1" relativePoint="RIGHT" x="8" y="0"/>
+						</Anchors>
+					</Button>
+<!-- Check Button 1, chat message -->
+					<CheckButton name="$parentCheckButton1" inherits="vdwCheckButton">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="$parentPopOut1" relativePoint="BOTTOMLEFT" x="4" y="0"/>
+						</Anchors>
+					</CheckButton>
+				</Frames>
+			</Frame>
+<!-- Options Box 5 auction bid placed -->
+			<Frame name="$parentBox5" inherits="vdwOptionsBox">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativePoint="TOPLEFT" x ="8" y="-64"/>
+				</Anchors>
+				<Frames>
+<!-- Pop Out 1 sounds -->
+					<Button name="$parentPopOut1" inherits="vdwPopOut">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativePoint="TOPLEFT" x="4" y="-40"/>
+						</Anchors>
+					</Button>
+<!-- Pop Out 2 emotes -->
+					<Button name="$parentPopOut2" inherits="vdwPopOut">
+						<Anchors>
+							<Anchor point="LEFT" relativeTo="$parentPopOut1" relativePoint="RIGHT" x="8" y="0"/>
+						</Anchors>
+					</Button>
+<!-- Check Button 1, chat message -->
+					<CheckButton name="$parentCheckButton1" inherits="vdwCheckButton">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="$parentPopOut1" relativePoint="BOTTOMLEFT" x="4" y="0"/>
+						</Anchors>
+					</CheckButton>
+				</Frames>
+			</Frame>
+<!-- Options Box 6 auction removed -->
+			<Frame name="$parentBox6" inherits="vdwOptionsBox">
+				<Anchors>
+					<Anchor point="TOPLEFT" relativePoint="TOPLEFT" x ="8" y="-64"/>
+				</Anchors>
+				<Frames>
+<!-- Pop Out 1 sounds -->
+					<Button name="$parentPopOut1" inherits="vdwPopOut">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativePoint="TOPLEFT" x="4" y="-40"/>
+						</Anchors>
+					</Button>
+<!-- Pop Out 2 emotes -->
+					<Button name="$parentPopOut2" inherits="vdwPopOut">
+						<Anchors>
+							<Anchor point="LEFT" relativeTo="$parentPopOut1" relativePoint="RIGHT" x="8" y="0"/>
+						</Anchors>
+					</Button>
+<!-- Check Button 1, chat message -->
+					<CheckButton name="$parentCheckButton1" inherits="vdwCheckButton">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativeTo="$parentPopOut1" relativePoint="BOTTOMLEFT" x="4" y="0"/>
+						</Anchors>
+					</CheckButton>
 				</Frames>
 			</Frame>
 		</Frames>
 	</Frame>
-	<Script file="SSoA_Options_1.lua"/>
+	<Script file="SSOA_Options_1.lua"/>
 </Ui>

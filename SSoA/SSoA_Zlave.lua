@@ -1,17 +1,103 @@
--- create some global variables --
+-- some variables --
+VDW.SSOA = VDW.SSOA or {}
+local G = VDW.Local.Override
+local C = VDW.GetAddonColors("SSOA")
+local prefixTip = VDW.Prefix("SSOA")
+local prefixChat = VDW.PrefixChat("SSOA")
+-- local-only strings for THIS file --
+local L = (function()
+	local base = {
+-- warnings --
+		WRN_BID_PLACED = " There was a bid on your Auction",
+		WRN_AUCTION_REMOVED = " Your Auction have been removed!",
+		WRN_AUCTION_WON = " You have won the Auction of %s",
+		WRN_AUCTION_OUTBID = " Someone outbid you in the Auction of %s",
+		WRN_AUCTION_SOLD = " Your Auction of %s have been sold!",
+		WRN_AUCTION_EXPIRED = " Your Auction of %s have been expired!",
+	}
+-- override --
+	local o = {
+		frFR = {
+-- warnings --
+			WRN_BID_PLACED = " Une enchere a ete placee sur votre vente de %s",
+			WRN_AUCTION_REMOVED = " Votre vente aux encheres a ete retiree !",
+			WRN_AUCTION_WON = " Vous avez remporte la vente aux encheres de %s",
+			WRN_AUCTION_OUTBID = " Quelqu'un a sur-encheri sur la vente aux encheres de %s",
+			WRN_AUCTION_SOLD = " Votre vente aux encheres de %s a ete vendue !",
+			WRN_AUCTION_EXPIRED = " Votre vente aux encheres de %s a expire !",
+		},
+		deDE = {
+-- warnings --
+			WRN_BID_PLACED = " Es wurde ein Gebot auf deine Auktion von %s abgegeben",
+			WRN_AUCTION_REMOVED = " Deine Auktion wurde entfernt!",
+			WRN_AUCTION_WON = " Du hast die Auktion von %s gewonnen",
+			WRN_AUCTION_OUTBID = " Jemand hat dich bei der Auktion von %s ueberboten",
+			WRN_AUCTION_SOLD = " Deine Auktion von %s wurde verkauft!",
+			WRN_AUCTION_EXPIRED = " Deine Auktion von %s ist abgelaufen!",
+		},
+		esES = {
+-- warnings --
+			WRN_BID_PLACED = " Se ha realizado una puja en tu subasta de %s",
+			WRN_AUCTION_REMOVED = " Tu subasta ha sido eliminada!",
+			WRN_AUCTION_WON = " Has ganado la subasta de %s",
+			WRN_AUCTION_OUTBID = " Alguien te ha superado en la subasta de %s",
+			WRN_AUCTION_SOLD = " Tu subasta de %s se ha vendido!",
+			WRN_AUCTION_EXPIRED = " Tu subasta de %s ha expirado!",
+		},
+		esMX = {
+-- warnings --
+			WRN_BID_PLACED = " Hubo una puja en tu subasta de %s",
+			WRN_AUCTION_REMOVED = " Tu subasta fue eliminada!",
+			WRN_AUCTION_WON = " Ganaste la subasta de %s",
+			WRN_AUCTION_OUTBID = " Alguien te supero en la subasta de %s",
+			WRN_AUCTION_SOLD = " Tu subasta de %s se vendio!",
+			WRN_AUCTION_EXPIRED = " Tu subasta de %s expiro!",
+		},
+		ptBR = {
+-- warnings --
+			WRN_BID_PLACED = " Houve um lance no seu leilao de %s",
+			WRN_AUCTION_REMOVED = " Seu leilao foi removido!",
+			WRN_AUCTION_WON = " Voce ganhou o leilao de %s",
+			WRN_AUCTION_OUTBID = " Alguem superou seu lance no leilao de %s",
+			WRN_AUCTION_SOLD = " Seu leilao de %s foi vendido!",
+			WRN_AUCTION_EXPIRED = " Seu leilao de %s expirou!",
+		},
+		itIT = {
+-- warnings --
+			WRN_BID_PLACED = " E stata fatta un’offerta sulla tua asta di %s",
+			WRN_AUCTION_REMOVED = " La tua asta e stata rimossa!",
+			WRN_AUCTION_WON = " Hai vinto l’asta di %s",
+			WRN_AUCTION_OUTBID = " Qualcuno ti ha superato nell’asta di %s",
+			WRN_AUCTION_SOLD = " La tua asta di %s e stata venduta!",
+			WRN_AUCTION_EXPIRED = " La tua asta di %s e scaduta!",
+		},
+		ruRU = base,
+		zhCN = base,
+		zhTW = base,
+		koKR = base,
+	}
+-- function --
+	local loc = GetLocale()
+	local ov = o[loc]
+	if type(ov) == "string" then ov = o[ov] end
+	if ov then
+		for k, v in pairs(ov) do base[k] = v end
+	end
+	return base
+end)()
+-- some variables --
 local function CreateGlobalVariables()
--- colors --
-	ssoaMainColor = CreateColorFromRGBAHexString("F0E68CFF")
-	ssoaHighColor = CreateColorFromRGBAHexString("00BFFFFF")
-	ssoaNoMainColor = CreateColorFromRGBAHexString("F0E68C00")
-	ssoaNoHighColor = CreateColorFromRGBAHexString("00BFFF00")
 -- function for opening the options --
-	local function ssoaShowMenu()
+	local function ShowMenu()
 		if not InCombatLockdown() then
-			local _, loaded = C_AddOns.IsAddOnLoaded("SSoA_Options")
-			local loadable, reason = C_AddOns.IsAddOnLoadable("SSoA_Options" , nil , true)
-			if loadable and not loaded then
-				C_AddOns.LoadAddOn("SSoA_Options")
+			local _, loaded = C_AddOns.IsAddOnLoaded("SSOA_Options")
+			local loadable, reason = C_AddOns.IsAddOnLoadable("SSOA_Options" , nil , true)
+			if reason == "MISSING" then
+				C_Sound.PlayVocalErrorSound(48)
+				DEFAULT_CHAT_FRAME:AddMessage(C.Main:WrapTextInColorCode(prefixChat.." "..string.format(G.WRN_ADDON_IS_STATE, C.High:WrapTextInColorCode("Sweet Sounds of Auction House Options"), reason)))
+				UIErrorsFrame:AddExternalWarningMessage(string.format(G.WRN_ADDON_IS_STATE, C.High:WrapTextInColorCode("Sweet Sounds of Auction House Options"), reason))
+			elseif loadable and not loaded then
+				C_AddOns.LoadAddOn("SSOA_Options")
 				if not ssoaOptions00:IsShown() then
 					ssoaOptions00:Show ()
 				else
@@ -24,224 +110,135 @@ local function CreateGlobalVariables()
 					ssoaOptions00:Hide()
 				end
 			else
-				ssoaTime = GameTime_GetTime(false)
-				DEFAULT_CHAT_FRAME:AddMessage(ssoaTime.."|A:"..C_AddOns.GetAddOnMetadata("SSoA", "IconAtlas")..":16:16|a ["..ssoaMainColor:WrapTextInColorCode(C_AddOns.GetAddOnMetadata("SSoA", "Title")).."] The addon with the name "..ssoaMainColor:WrapTextInColorCode(C_AddOns.GetAddOnMetadata("SSoA_Options", "Title")).." is "..reason.."!")
+				C_Sound.PlayVocalErrorSound(48)
+				DEFAULT_CHAT_FRAME:AddMessage(C.Main:WrapTextInColorCode(prefixChat.." "..string.format(G.WRN_ADDON_IS_STATE, C_AddOns.GetAddOnMetadata("SSOA_Options", "Title"), reason)))
+				UIErrorsFrame:AddExternalWarningMessage(string.format(G.WRN_ADDON_IS_STATE, C_AddOns.GetAddOnMetadata("SSOA_Options", "Title"), reason))
 			end
 		else
-			ssoaTime = GameTime_GetTime(false)
-			DEFAULT_CHAT_FRAME:AddMessage(ssoaTime.."|A:"..C_AddOns.GetAddOnMetadata("SSoA", "IconAtlas")..":16:16|a ["..ssoaMainColor:WrapTextInColorCode(C_AddOns.GetAddOnMetadata("SSoA", "Title")).."] You can't do this, while you are in combat!")
+			C_Sound.PlayVocalErrorSound(48)
+			DEFAULT_CHAT_FRAME:AddMessage(C.Main:WrapTextInColorCode(prefixChat.." "..G.WRN_COMBAT_LOCKDOWN))
+			UIErrorsFrame:AddExternalWarningMessage(G.WRN_COMBAT_LOCKDOWN)
 		end
 	end
--- Mini Map Button Functions --
+-- slash command --
+	RegisterNewSlashCommand(ShowMenu, "ssoa", "sweetsoundofauctionhouse")
+-- mini map button functions --
 	AddonCompartmentFrame:RegisterAddon({
-		text = ssoaMainColor:WrapTextInColorCode(C_AddOns.GetAddOnMetadata("SSoA", "Title")),
-		icon = C_AddOns.GetAddOnMetadata("SSoA", "IconAtlas"),
+		text = C.Main:WrapTextInColorCode(C_AddOns.GetAddOnMetadata("SSOA", "Title")),
+		icon = C_AddOns.GetAddOnMetadata("SSOA", "IconAtlas"),
 		notCheckable = true,
 		func = function(button, menuInputData, menu)
 			local buttonName = menuInputData.buttonName
 			if buttonName == "LeftButton" then
-				ssoaShowMenu()
+				ShowMenu()
 			end
 		end,
 		funcOnEnter = function(button)
 			MenuUtil.ShowTooltip(button, function(tooltip)
-			tooltip:SetOwner(button, "ANCHOR_TOP", 0, 0)
-			tooltip:SetText("|A:"..C_AddOns.GetAddOnMetadata("SSoA", "IconAtlas")..":16:16|a "..ssoaMainColor:WrapTextInColorCode(C_AddOns.GetAddOnMetadata("SSoA", "Title")).."|nLeft Click: "..ssoaMainColor:WrapTextInColorCode("Open the main panel of settings!"))
+			tooltip:SetOwner(AddonCompartmentFrame, "ANCHOR_TOP", 0, 0)
+			tooltip:SetText(C.Main:WrapTextInColorCode(prefixTip).."|n"..G.BUTTON_L_CLICK..": "..G.TIP_OPEN_SETTINGS_MAIN)
 			end)
 		end,
 		funcOnLeave = function(button)
-			MenuUtil.HideTooltip(button)
+			MenuUtil.HideTooltip(AddonCompartmentFrame)
 		end,
 	})
--- Slash Command --
-	RegisterNewSlashCommand(ssoaShowMenu, "ssoa", "sweetsoundofauctionhouse")
--- function for the visibility of SSoA frame --
-	function ssoaFrameVisibility()
-		if SSoAframeOpt["Show"] == 1 then
-			ssoaTextyFrame:ClearAllPoints()
-			ssoaTextyFrame:SetPoint("BOTTOMLEFT", UIParent, "BOTTOMLEFT", SSoAframeOpt["X"], SSoAframeOpt["Y"])
-			ssoaTextyFrame:SetWidth(SSoAframeOpt["Width"])
-			ssoaTextyFrame:SetHeight(SSoAframeOpt["Height"])
-			ssoaTextyFrame:Show()
-		elseif SSoAframeOpt["Show"] == 0 then
-			ssoaTextyFrame:ClearAllPoints()
-			ssoaTextyFrame:SetPoint("BOTTOMLEFT", UIParent, "BOTTOMLEFT", SSoAframeOpt["X"], SSoAframeOpt["Y"])
-			ssoaTextyFrame:SetWidth(SSoAframeOpt["Width"])
-			ssoaTextyFrame:SetHeight(SSoAframeOpt["Height"])
-			ssoaTextyFrame:Hide()
-		end
-	end
--- function for the fonts of SSoA frame --
-	function ssoaFrameFonts()
-		--ssoaTextyFrame:SetTextColor(ssoaMainColor:GetRGB())
-		if SSoAframeOpt["Fonts"] == 11 then
-			ssoaTextyFrame:SetFontObject("ssoa_NormalShadowFonts_11")
-		elseif SSoAframeOpt["Fonts"] == 12 then
-			ssoaTextyFrame:SetFontObject("ssoa_NormalShadowFonts_12")
-		elseif SSoAframeOpt["Fonts"] == 13 then
-			ssoaTextyFrame:SetFontObject("ssoa_NormalShadowFonts_13")
-		elseif SSoAframeOpt["Fonts"] == 14 then
-			ssoaTextyFrame:SetFontObject("ssoa_NormalShadowFonts_14")
-		elseif SSoAframeOpt["Fonts"] == 15 then
-			ssoaTextyFrame:SetFontObject("ssoa_NormalShadowFonts_15")
-		elseif SSoAframeOpt["Fonts"] == 16 then
-			ssoaTextyFrame:SetFontObject("ssoa_NormalShadowFonts_16")
-		elseif SSoAframeOpt["Fonts"] == 17 then
-			ssoaTextyFrame:SetFontObject("ssoa_NormalShadowFonts_17")
-		elseif SSoAframeOpt["Fonts"] == 18 then
-			ssoaTextyFrame:SetFontObject("ssoa_NormalShadowFonts_18")
-		end
-		ssoaTextyFrame:SetTextColor(ssoaMainColor:GetRGB())
-	end
--- function for the duretion of SSoA frame --
-	function ssoaFrameDuration()
-		ssoaTextyFrame:SetTimeVisible(SSoAframeOpt["Duration"])
-		ssoaTextyFrame.BGtexture1:SetAlpha(SSoAframeOpt["BackgroundOpacity"])
-		ssoaTextyFrame.TopRightTexture:SetAlpha(SSoAframeOpt["BackgroundOpacity"])
-		ssoaTextyFrame.TopLeftTexture:SetAlpha(SSoAframeOpt["BackgroundOpacity"])
-		ssoaTextyFrame.BGtexture2:SetAlpha(SSoAframeOpt["BackgroundOpacity"])
-		ssoaTextyFrame.Title:SetAlpha(SSoAframeOpt["BackgroundOpacity"])
-	end
 end
--- Loading First Time the Variables --
+-- loading first time the variables --
 local function FirstTimeSavedVariables()
-	if SSoArNumber == nil then SSoArNumber = 0 end
-	if SSoArProfile == nil then SSoArProfile ={} end
-	if SSoArCounterLoading == nil or SSoArCounterLoading ~= nil then SSoArCounterLoading = 0 end
-	if SSoArCounterDeleting == nil or SSoArCounterDeleting ~= nil then SSoArCounterDeleting = 0 end
-	if SSoAsell == nil then
-		SSoAsell = {
-			Sound = "Cash Register Machine",
-			Emote = "Cheer",
-			ChatFrame = 1,
-			SsoaFrame = 0,
+	if SSOAprofiles == nil then SSOAprofiles ={} end
+	if SSOAsettings == nil then
+		SSOAsettings = {
+			Sold = {Emotes = "CHEER", Sounds = "Cash Machine", Chat = true,},
+			Expired = {Emotes = "MOURN", Sounds = "Bells", Chat = true,},
+			Won = {Emotes = "WHOA", Sounds = "None", Chat = true,},
+			Outbid = {Emotes = "Angry", Sounds = "Zong", Chat = true,},
+			BidPlaced = {Emotes = "Congratulate", Sounds = "Cash Machine", Chat = true,},
+			Removed = {Emotes = "OOPS", Sounds = "None", Chat = true,},
 		}
 	end
-	if SSoAexpire == nil then
-		SSoAexpire = {
-			Sound = "Zong",
-			Emote = "Violin",
-			ChatFrame = 1,
-			SsoaFrame = 0,
-		}
-	end
-	if SSoAframeOpt == nil then
-		SSoAframeOpt = {
-			Show = 0,
-			X = 580,
-			Y = 410,
-			Width = 304,
-			Height = 80,
-			Loot = 0,
-		}
-	end
-	if SSoAframeOpt["Fonts"] == nil then SSoAframeOpt["Fonts"] = 16 end
-	if SSoAframeOpt["Duration"] == nil then SSoAframeOpt["Duration"] = 180 end
-	if SSoAframeOpt["BackgroundOpacity"] == nil then SSoAframeOpt["BackgroundOpacity"] = 1 end
-	if SSoAframeOpt["Money"] == nil then SSoAframeOpt["Money"] = 0 end
-	if SSoAframeOpt["Currency"] == nil then SSoAframeOpt["Currency"] = 0 end
-end
--- Scrolling Functions --
-local function ScrollFrame_OnMouseWheel(self, delta)
-	if delta == 1 then self:ScrollUp() elseif delta == -1 then self:ScrollDown() end
-end
--- Taking care of the SSoA frame --
-ssoaTextyFrame:SetScript("OnMouseWheel", ScrollFrame_OnMouseWheel)
-ssoaTextyFrame:RegisterEvent("PLAYER_LOGIN")
-ssoaTextyFrame:RegisterEvent("AUCTION_HOUSE_SHOW_FORMATTED_NOTIFICATION")
-ssoaTextyFrame:RegisterEvent("CHAT_MSG_MONEY")
-ssoaTextyFrame:RegisterEvent("CHAT_MSG_LOOT")
-ssoaTextyFrame:RegisterEvent("CHAT_MSG_CURRENCY")
-ssoaTextyFrame:SetJustifyH("LEFT")
-ssoaTextyFrame:SetInsertMode(2)
--- Function for the Selling Sounds --
-local function SellingSounds()
-	if SSoAsell["Sound"] == "Auction House's Sound" then
-		PlaySound(5275, "Master")
-	elseif SSoAsell["Sound"] == "Cash Register Machine" then
-		PlaySoundFile("Interface\\AddOns\\SSoA\\Sounds\\CashRegisterSound.mp3", "Master")
-	elseif SSoAsell["Sound"] == "Coins Sound" then
-		PlaySound(120, "Master")
+	local _, loaded = C_AddOns.IsAddOnLoaded("VDWS")
+	local loadable, reason = C_AddOns.IsAddOnLoadable("VDWS" , nil , true)
+	if loadable and loaded then
+		VDW.SSOA.VDWS = true
 	end
 end
--- Function for the Selling Emotes --
-local function SellingEmote()
-	if SSoAsell["Emote"] == "Cheer" then
-		DoEmote("CHEER", "none")
-	elseif SSoAsell["Emote"] == "Congratulate" then
-		DoEmote("Congratulate", "none")
-	elseif SSoAsell["Emote"] == "Dance" then
-		DoEmote("Dance", "none")
-	elseif SSoAsell["Emote"] == "WHOA" then
-		DoEmote("WHOA", "none")
+-- function to play the emote --
+local function playEmote(var1)
+	if var1 ~= "None" then
+		DoEmote(var1, "none")
 	end
 end
--- Function for Expiring Sounds --
-local function ExpiringSounds()
-	if SSoAexpire["Sound"] == "Zong" then
-		PlaySoundFile("Interface\\AddOns\\SSoA\\Sounds\\Zong.mp3", "Master")
-	elseif SSoAexpire["Sound"] == "Bells" then
-		PlaySoundFile("Interface\\AddOns\\SSoA\\Sounds\\Bells.mp3", "Master")
-	elseif SSoAexpire["Sound"] == "Mission Fail" then
-		PlaySound(43503, "Master")
+-- function to play the sound --
+local function playSound(var1)
+	if var1 ~= "None" then
+		PlaySoundFile("Interface\\AddOns\\VDW\\media\\sounds\\"..var1..".mp3", "Master")
 	end
 end
--- Function for Expiring Emotes --
-local function ExpiringEmote()
-	if SSoAexpire["Emote"] == "Mourn" then
-		DoEmote("MOURN", "none")
-	elseif SSoAexpire["Emote"] == "Angry" then
-		DoEmote("Angry", "none")
-	elseif SSoAexpire["Emote"] == "Violin" then
-		DoEmote("Violin", "none")
-	elseif SSoAexpire["Emote"] == "OOPS" then
-		DoEmote("OOPS", "none")
-	end
-end
--- Events time --
-local function EventsTime(self, event, arg1, arg2, arg3)
+-- some local variables --
+local t
+-- events time --
+local function EventsTime(self, event, arg1, arg2, arg3, arg4)
 	if event == "PLAYER_LOGIN" then
 		CreateGlobalVariables()
 		FirstTimeSavedVariables()
-		ssoaFrameVisibility()
-		ssoaFrameFonts()
-		ssoaFrameDuration()
-	elseif event == "CHAT_MSG_MONEY" then
-		if SSoAframeOpt["Money"] == 1 then
-			ssoaTime = GameTime_GetTime(false)
-			self:AddMessage("[|cnWHITE_FONT_COLOR:"..ssoaTime.."|r] "..arg1)
+	elseif event == "AUCTION_HOUSE_SHOW_FORMATTED_NOTIFICATION" then
+		t = GameTime_GetTime(false)
+		if arg1 == 0 then
+			playEmote(SSOAsettings.BidPlaced.Emotes)
+			playSound(SSOAsettings.BidPlaced.Sounds)
+			if VDW.SSOA.VDWS and VDWSsettings.Looty.SSOA then
+				vdwsLooty:AddMessage(C.Main:WrapTextInColorCode(prefixChat..L.WRN_BID_PLACED))
+			end
+			if SSOAsettings.BidPlaced.Chat then
+				DEFAULT_CHAT_FRAME:AddMessage(C.Main:WrapTextInColorCode(prefixChat..L.WRN_BID_PLACED))
+			end
+		elseif arg1 == 1 then
+			playEmote(SSOAsettings.Removed.Emotes)
+			playSound(SSOAsettings.Removed.Sounds)
+			if VDW.SSOA.VDWS and VDWSsettings.Looty.SSOA then
+				vdwsLooty:AddMessage(C.Main:WrapTextInColorCode(prefixChat..L.WRN_AUCTION_REMOVED))
+			end
+			if SSOAsettings.Removed.Chat then
+				DEFAULT_CHAT_FRAME:AddMessage(C.Main:WrapTextInColorCode(prefixChat..L.WRN_AUCTION_REMOVED))
+			end
+		elseif arg1 == 2 then
+			playEmote(SSOAsettings.Won.Emotes)
+			playSound(SSOAsettings.Won.Sounds)
+			if VDW.SSOA.VDWS and VDWSsettings.Looty.SSOA then
+				vdwsLooty:AddMessage(C.Main:WrapTextInColorCode(prefixChat..string.format(L.WRN_AUCTION_WON, C.High:WrapTextInColorCode(arg2)))) 
+			end
+			if SSOAsettings.Won.Chat then
+				DEFAULT_CHAT_FRAME:AddMessage(C.Main:WrapTextInColorCode(prefixChat..string.format(L.WRN_AUCTION_WON, C.High:WrapTextInColorCode(arg2)))) 
+			end
+		elseif arg1 == 3 then
+			playEmote(SSOAsettings.Outbid.Emotes)
+			playSound(SSOAsettings.Outbid.Sounds)
+			if VDW.SSOA.VDWS and VDWSsettings.Looty.SSOA then
+				vdwsLooty:AddMessage(C.Main:WrapTextInColorCode(prefixChat..string.format(L.WRN_AUCTION_OUTBID, C.High:WrapTextInColorCode(arg2))))
+			end
+			if SSOAsettings.Outbid.Chat then
+				DEFAULT_CHAT_FRAME:AddMessage(C.Main:WrapTextInColorCode(prefixChat..string.format(L.WRN_AUCTION_OUTBID, C.High:WrapTextInColorCode(arg2))))
+			end
+		elseif arg1 == 4 then
+			playEmote(SSOAsettings.Sold.Emotes)
+			playSound(SSOAsettings.Sold.Sounds)
+			if VDW.SSOA.VDWS and VDWSsettings.Looty.SSOA then
+				vdwsLooty:AddMessage(C.Main:WrapTextInColorCode(prefixChat..string.format(L.WRN_AUCTION_SOLD, C.High:WrapTextInColorCode(arg2))))
+			end
+			if SSOAsettings.Sold.Chat then
+				DEFAULT_CHAT_FRAME:AddMessage(C.Main:WrapTextInColorCode(prefixChat..string.format(L.WRN_AUCTION_SOLD, C.High:WrapTextInColorCode(arg2))))
+			end
+		elseif arg1 == 5 then
+			playEmote(SSOAsettings.Expired.Emotes)
+			playSound(SSOAsettings.Expired.Sounds)
+			if VDW.SSOA.VDWS and VDWSsettings.Looty.SSOA then
+				vdwsLooty:AddMessage(C.Main:WrapTextInColorCode(prefixChat..string.format(L.WRN_AUCTION_EXPIRED, C.High:WrapTextInColorCode(arg2))))
+			end
+			if SSOAsettings.Expired.Chat then
+				DEFAULT_CHAT_FRAME:AddMessage(C.Main:WrapTextInColorCode(prefixChat..string.format(L.WRN_AUCTION_EXPIRED, C.High:WrapTextInColorCode(arg2))))
+			end
 		end
-	elseif event == "CHAT_MSG_LOOT" then
-		if SSoAframeOpt["Loot"] == 1 then
-			ssoaTime = GameTime_GetTime(false)
-			self:AddMessage("[|cnWHITE_FONT_COLOR:"..ssoaTime.."|r] "..arg1)
-		end
-	elseif event == "CHAT_MSG_CURRENCY" then
-		if SSoAframeOpt["Currency"] == 1 then
-			ssoaTime = GameTime_GetTime(false)
-			self:AddMessage("[|cnWHITE_FONT_COLOR:"..ssoaTime.."|r] "..arg1)
-		end
-	elseif event == "AUCTION_HOUSE_SHOW_FORMATTED_NOTIFICATION" and arg1 == 4 then
-		ssoaTime = GameTime_GetTime(false)
-		if SSoAsell["ChatFrame"] == 1 then
-			DEFAULT_CHAT_FRAME:AddMessage("["..ssoaTime.."] Your Auction for "..ssoaHighColor:WrapTextInColorCode(arg2).." has been |cnDARKYELLOW_FONT_COLOR:sold|r")
-		end
-		if SSoAsell["SsoaFrame"] == 1 then
-			self:AddMessage("[|cnWHITE_FONT_COLOR:"..ssoaTime.."|r] Your Auction for "..ssoaHighColor:WrapTextInColorCode(arg2).." has been |cnDARKYELLOW_FONT_COLOR:sold|r")
-		end
-		SellingSounds()
-		SellingEmote()
-	elseif event == "AUCTION_HOUSE_SHOW_FORMATTED_NOTIFICATION" and arg1 == 5 then
-		ssoaTime = GameTime_GetTime(false)
-		if SSoAexpire["ChatFrame"] == 1 then
-			DEFAULT_CHAT_FRAME:AddMessage("["..ssoaTime.."|r] Your Auction for "..ssoaHighColor:WrapTextInColorCode(arg2).." has been |cFF991A4Dexpired|r")
-		end
-		if SSoAexpire["SsoaFrame"] == 1 then
-			self:AddMessage("[|cnWHITE_FONT_COLOR:"..ssoaTime.."|r] Your Auction for "..ssoaHighColor:WrapTextInColorCode(arg2).." has been |cFF991A4Dexpired|r")
-		end
-		ExpiringSounds()
-		ExpiringEmote()
 	end
 end
-ssoaTextyFrame:SetScript("OnEvent", EventsTime)
-
+ssoaZlave:SetScript("OnEvent", EventsTime)

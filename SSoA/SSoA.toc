@@ -1,4 +1,8 @@
-## Interface: 110207
+## Interface: 120001
+## IconAtlas: Relic-Holy-TraitBG
+## Title: Sweet |cFFEEE991Sound|r of |cFFEEE991Auction|r House
+## Notes: |cFFB09F8DAah! the Sweet |cFFEEE991Sound|r of |cFFEEE991Auction|r House|r!
+## Version: 2.00.02
 ## Category: Auctions
 ## Category-deDE: Auktionen
 ## Category-esES: Subastas
@@ -10,16 +14,12 @@
 ## Category-ruRU: Аукционы
 ## Category-zhCN: 拍卖
 ## Category-zhTW: 拍賣
-## Title: Sweet |cff00BFFFSound|r of |cff00BFFFAuction House|r!
-## Notes: |cffF0E68CAah! the Sweet |cff00BFFFSound|r of |cff00BFFFAuction|r House|r!
-## IconAtlas: Relic-Water-TraitBG
+## Group: VDWS
+## Dependencies: VDW
 ## DefaultState: enabled
-## SavedVariables:  SSoArNumber SSoArProfile SSoArCounterLoading SSoArCounterDeleting
-## SavedVariablesPerCharacter: SSoAsell SSoAexpire SSoAframeOpt
-## Version: 1.47
+## SavedVariables: SSOAprofiles
+## SavedVariablesPerCharacter: SSOAsettings
 ## Author: The_Indolent
 ## X-Website: https://panosanastasiou.rocks/
 
-SSoA_Zlave.xml
-
-
+SSOA_Zlave.xml

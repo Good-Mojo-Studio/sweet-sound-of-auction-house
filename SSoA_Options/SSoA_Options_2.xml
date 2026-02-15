@@ -1,127 +1,46 @@
-<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/ ..\FrameXML\UI.xsd">
-	<Frame name="ssoaOptions2" parent="UIParent" inherits="ssoaOptionsPanel">
+<Ui xmlns="http://www.blizzard.com/wow/ui/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.blizzard.com/wow/ui/ https://raw.githubusercontent.com/Gethe/wow-ui-source/live/Interface/AddOns/Blizzard_SharedXML/UI.xsd">
+	<Frame name="ssoaOptions2" inherits="vdwOptionsPanel" parent="UIParent">
 		<Frames>
-<!-- Options Box 1 Visibility of SSoA frame -->
-			<Frame name="$parentBox1" inherits="ssoaOptionsBox">
+<!-- Options Box 1 saving profiles -->
+			<Frame name="$parentBox1" inherits="vdwOptionsBox">
 				<Anchors>
-					<Anchor point="TOPLEFT" relativePoint="TOPLEFT" x ="0" y="-64"/>
+					<Anchor point="TOP" relativePoint="TOP" x ="0" y="-64"/>
 				</Anchors>
-				<Size x="360" y="64"/>
 				<Frames>
-<!-- Pop Out Button 1 Visibility of SSoA frame -->
-					<Button name="$parentPopOut1" inherits="ssoaPopOut">
+<!--Edit Box 1 naming profile -->
+					<Frame name="$parentEditBox1" inherits="vdwEditBox">
 						<Anchors>
-							<Anchor point="BOTTOM" relativePoint="BOTTOM" x="0" y="8"/>
+							<Anchor point="TOP" relativeKey="$parent.Title" relativePoint="BOTTOM" x="0" y="-8"/>
 						</Anchors>
-						<Frames>
-							<Button name="$parentChoice1" inherits="ssoaPopOutButton"/>
-						</Frames>
+					</Frame>
+				</Frames>
+			</Frame>
+<!-- Options Box 2 loading profiles -->
+			<Frame name="$parentBox2" inherits="vdwOptionsBox">
+				<Frames>
+<!-- Pop Out 1 loading choose -->
+					<Button name="$parentPopOut1" inherits="vdwPopOut">
+						<Anchors>
+							<Anchor point="TOP" relativeKey="$parent.Title" relativePoint="BOTTOM" x="0" y="-8"/>
+						</Anchors>
 					</Button>
 				</Frames>
 			</Frame>
-<!-- Options Box 2 Position of SSoA Frame -->
-			<Frame name="$parentBox2" inherits="ssoaOptionsBox">
-				<Anchors>
-					<Anchor point="TOPRIGHT" relativePoint="TOPRIGHT" x ="0" y="-64"/>
-				</Anchors>
-				<Size x="360" y="104"/>
-				<Layers>
-					<Layer level="OVERLAY">
-						<FontString parentKey="CenterText" font="Game13FontShadow" justifyV="MIDDLE" justifyH="LEFT" >
-							<Anchors>
-								<Anchor point="TOP" relativeKey="$parent.TitleTxt" relativePoint="BOTTOM" x="0" y="-8"/>
-							</Anchors>
-							<Scripts>
-								<OnLoad>
-									self:SetTextColor(ssoaMainColor:GetRGB())
-								</OnLoad>
-								<OnShow>
-									self:SetWidth(self:GetParent():GetWidth()*0.95)
-								</OnShow>
-							</Scripts>
-						</FontString>
-					</Layer>
-				</Layers>
-			</Frame>
-<!-- Options Box 3 Width and Height of SSoA frame-->
-			<Frame name="$parentBox3" inherits="ssoaOptionsBox">
-				<Size x="360" y="136"/>
+<!-- Options Box 3 deleting profiles -->
+			<Frame name="$parentBox3" inherits="vdwOptionsBox">
 				<Frames>
-<!-- Slider 1 Width of SSoA frame -->	
-					<Frame name="$parentSlider1" inherits="ssoaSlider">
+<!-- Pop Out 1 deleting choose -->
+					<Button name="$parentPopOut1" inherits="vdwPopOut">
 						<Anchors>
-							<Anchor point="TOP" relativePoint="TOP" x="0" y="-32"/>
+							<Anchor point="TOP" relativeKey="$parent.Title" relativePoint="BOTTOM" x="0" y="-8"/>
 						</Anchors>
-					</Frame>
-<!-- Slider 2 Height of SSoA frame -->	
-					<Frame name="$parentSlider2" inherits="ssoaSlider">
-						<Anchors>
-							<Anchor point="BOTTOM" relativePoint="BOTTOM" x="0" y="12"/>
-						</Anchors>
-					</Frame>
-				</Frames>
-			</Frame>
-<!-- Options Box 4 Text's Time Visible and opacity of the background SSoA frame-->
-			<Frame name="$parentBox4" inherits="ssoaOptionsBox">
-				<Anchors>
-					<Anchor point="TOPLEFT" relativePoint="TOPLEFT" x ="0" y="-64"/>
-				</Anchors>
-				<Size x="360" y="136"/>
-				<Frames>
-<!-- Slider 1 Text's Time Visible of SSoA frame -->	
-					<Frame name="$parentSlider1" inherits="ssoaSlider">
-						<Anchors>
-							<Anchor point="TOP" relativePoint="TOP" x="0" y="-32"/>
-						</Anchors>
-					</Frame>
-<!-- Slider 2 Opacity of Background of SSoA frame -->	
-					<Frame name="$parentSlider2" inherits="ssoaSlider">
-						<Anchors>
-							<Anchor point="BOTTOM" relativePoint="BOTTOM" x="0" y="12"/>
-						</Anchors>
-					</Frame>
-				</Frames>
-			</Frame>
-<!-- Options Box 5 Font's Size and SSoA frame's Content -->
-			<Frame name="$parentBox5" inherits="ssoaOptionsBox">
-				<Size x="360" y="112"/>
-				<Frames>
-<!-- Check Button 1 Loot -->
-					<CheckButton name="$parentCheckButton1" inherits="ssoaCheckButton">
-						<Anchors>
-							<Anchor point="TOPLEFT" relativePoint="TOPLEFT" x="8" y="-28"/>
-						</Anchors>
-					</CheckButton>
-<!-- Check Button 2 Money -->
-					<CheckButton name="$parentCheckButton2" inherits="ssoaCheckButton">
-						<Anchors>
-							<Anchor point="TOPLEFT" relativeTo="$parentCheckButton1" relativePoint="BOTTOMLEFT" x="0" y="0"/>
-						</Anchors>
-					</CheckButton>
-<!-- Check Button 3 Currency -->
-					<CheckButton name="$parentCheckButton3" inherits="ssoaCheckButton">
-						<Anchors>
-							<Anchor point="TOPLEFT" relativeTo="$parentCheckButton2" relativePoint="BOTTOMLEFT" x="0" y="0"/>
-						</Anchors>
-					</CheckButton>
-<!-- Pop Out Button 1 font size -->
-					<Button name="$parentPopOut1" inherits="ssoaPopOut">
-						<Anchors>
-							<Anchor point="LEFT" relativeTo="$parentCheckButton2" relativePoint="RIGHT" x="144" y="0"/>
-						</Anchors>
-						<Frames>
-							<Button name="$parentChoice1" inherits="ssoaPopOutButton"/>
-							<Button name="$parentChoice2" inherits="ssoaPopOutButton"/>
-							<Button name="$parentChoice3" inherits="ssoaPopOutButton"/>
-							<Button name="$parentChoice4" inherits="ssoaPopOutButton"/>
-							<Button name="$parentChoice5" inherits="ssoaPopOutButton"/>
-							<Button name="$parentChoice6" inherits="ssoaPopOutButton"/>
-							<Button name="$parentChoice7" inherits="ssoaPopOutButton"/>
-						</Frames>
 					</Button>
 				</Frames>
+			</Frame>
+<!-- Options Box 4 Note box -->
+			<Frame name="$parentBox4" inherits="vdwOptionsBox">
 			</Frame>
 		</Frames>
 	</Frame>
-	<Script file="SSoA_Options_2.lua"/>
+	<Script file="SSOA_Options_2.lua"/>
 </Ui>
