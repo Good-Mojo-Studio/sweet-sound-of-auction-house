@@ -29,9 +29,6 @@
 			</Frame>
 <!-- Options Box 2 auction expired -->
 			<Frame name="$parentBox2" inherits="vdwOptionsBox">
-				<Anchors>
-					<Anchor point="TOPLEFT" relativePoint="TOPLEFT" x ="8" y="-64"/>
-				</Anchors>
 				<Frames>
 <!-- Pop Out 1 sounds -->
 					<Button name="$parentPopOut1" inherits="vdwPopOut">
@@ -55,9 +52,6 @@
 			</Frame>
 <!-- Options Box 3 auction won -->
 			<Frame name="$parentBox3" inherits="vdwOptionsBox">
-				<Anchors>
-					<Anchor point="TOPLEFT" relativePoint="TOPLEFT" x ="8" y="-64"/>
-				</Anchors>
 				<Frames>
 <!-- Pop Out 1 sounds -->
 					<Button name="$parentPopOut1" inherits="vdwPopOut">
@@ -81,9 +75,6 @@
 			</Frame>
 <!-- Options Box 4 auction outbid -->
 			<Frame name="$parentBox4" inherits="vdwOptionsBox">
-				<Anchors>
-					<Anchor point="TOPLEFT" relativePoint="TOPLEFT" x ="8" y="-64"/>
-				</Anchors>
 				<Frames>
 <!-- Pop Out 1 sounds -->
 					<Button name="$parentPopOut1" inherits="vdwPopOut">
@@ -107,9 +98,6 @@
 			</Frame>
 <!-- Options Box 5 auction bid placed -->
 			<Frame name="$parentBox5" inherits="vdwOptionsBox">
-				<Anchors>
-					<Anchor point="TOPLEFT" relativePoint="TOPLEFT" x ="8" y="-64"/>
-				</Anchors>
 				<Frames>
 <!-- Pop Out 1 sounds -->
 					<Button name="$parentPopOut1" inherits="vdwPopOut">
@@ -133,9 +121,6 @@
 			</Frame>
 <!-- Options Box 6 auction removed -->
 			<Frame name="$parentBox6" inherits="vdwOptionsBox">
-				<Anchors>
-					<Anchor point="TOPLEFT" relativePoint="TOPLEFT" x ="8" y="-64"/>
-				</Anchors>
 				<Frames>
 <!-- Pop Out 1 sounds -->
 					<Button name="$parentPopOut1" inherits="vdwPopOut">
@@ -153,6 +138,17 @@
 					<CheckButton name="$parentCheckButton1" inherits="vdwCheckButton">
 						<Anchors>
 							<Anchor point="TOPLEFT" relativeTo="$parentPopOut1" relativePoint="BOTTOMLEFT" x="4" y="0"/>
+						</Anchors>
+					</CheckButton>
+				</Frames>
+			</Frame>
+<!-- Options Box 7 auction created -->
+			<Frame name="$parentBox7" inherits="vdwOptionsBox">
+				<Frames>
+<!-- Check Button 1, chat message -->
+					<CheckButton name="$parentCheckButton1" inherits="vdwCheckButton">
+						<Anchors>
+							<Anchor point="TOPLEFT" relativePoint="TOPLEFT" x="8" y="-32"/>
 						</Anchors>
 					</CheckButton>
 				</Frames>

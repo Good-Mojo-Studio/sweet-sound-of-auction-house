@@ -4,6 +4,7 @@
 			<OnLoad>
 				self:RegisterEvent("PLAYER_LOGIN")
 				self:RegisterEvent("AUCTION_HOUSE_SHOW_FORMATTED_NOTIFICATION")
+				self:RegisterEvent("AUCTION_HOUSE_AUCTION_CREATED")
 			</OnLoad>
 		</Scripts>
 	</Frame>

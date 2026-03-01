@@ -38,7 +38,9 @@ ssoaOptions1Box5.Title:SetText(L.B_B_PLACED)
 ssoaOptions1Box5:SetPoint("TOPLEFT", ssoaOptions1Box3, "BOTTOMLEFT", 0, 0)
 ssoaOptions1Box6.Title:SetText(L.B_A_REMOVED)
 ssoaOptions1Box6:SetPoint("TOPLEFT", ssoaOptions1Box5, "TOPRIGHT", 0, 0)
-for i = 1, 6, 1 do
+ssoaOptions1Box7.Title:SetText("Auction Created")
+ssoaOptions1Box7:SetPoint("TOPLEFT", ssoaOptions1Box5, "BOTTOMLEFT", 0, 0)
+for i = 1, 7, 1 do
 	local tW = _G["ssoaOptions1Box"..i].Title:GetStringWidth()+16
 	local W = _G["ssoaOptions1Box"..i]:GetWidth()
 	if tW >= W then
@@ -46,8 +48,9 @@ for i = 1, 6, 1 do
 	end
 	_G["ssoaOptions1Box"..i]:SetHeight(104)
 end
+ssoaOptions1Box7:SetHeight(72)
 -- Coloring the boxes --
-for i = 1, 6, 1 do
+for i = 1, 7, 1 do
 	_G["ssoaOptions1Box"..i].Title:SetTextColor(C.Main:GetRGB())
 	_G["ssoaOptions1Box"..i].BorderTop:SetVertexColor(C.High:GetRGB())
 	_G["ssoaOptions1Box"..i].BorderBottom:SetVertexColor(C.High:GetRGB())
@@ -336,6 +339,27 @@ for i = 1, 6, 1 do
 		end
 	end)
 end
+-- check button pray to gods
+ssoaOptions1Box7CheckButton1.Text:SetWidth(ssoaOptions1Box1:GetWidth()*0.8)
+ssoaOptions1Box7CheckButton1.Text:SetText("Pray to the Gods")
+ssoaOptions1Box7CheckButton1:SetScript("OnEnter", function(self)
+	VDW.Tooltip_Show(self, prefixTip, "Check me if you want to Pray to the Gods", C.Main)
+end)
+ssoaOptions1Box7CheckButton1:HookScript("OnLeave", function(self) VDW.Tooltip_Hide() end)
+ssoaOptions1Box7CheckButton1:HookScript("OnClick", function (self, button)
+	if button == "LeftButton" then
+		if self:GetChecked() == true then
+			SSOAsettings["Created"]["Pray"] = true
+			self.Text:SetTextColor(C.Main:GetRGB())
+			PlaySound(858, "Master")
+		elseif self:GetChecked() == false then
+			SSOAsettings["Created"]["Pray"] = false
+			self.Text:SetTextColor(0.35, 0.35, 0.35, 0.8)
+			PlaySound(858, "Master")
+		end
+	end
+end)
+
 -- saved variables --
 local function CheckSavedVariables()
 	ssoaOptions1Box1PopOut1.Text:SetText(SSOAsettings["Sold"]["Emotes"])
@@ -391,6 +415,13 @@ local function CheckSavedVariables()
 	else
 		ssoaOptions1Box6CheckButton1:SetChecked(false)
 		ssoaOptions1Box6CheckButton1.Text:SetTextColor(0.35, 0.35, 0.35, 0.8)
+	end
+	if SSOAsettings["Created"]["Pray"] then
+		ssoaOptions1Box7CheckButton1:SetChecked(true)
+		ssoaOptions1Box7CheckButton1.Text:SetTextColor(C.Main:GetRGB())
+	else
+		ssoaOptions1Box7CheckButton1:SetChecked(false)
+		ssoaOptions1Box7CheckButton1.Text:SetTextColor(0.35, 0.35, 0.35, 0.8)
 	end
 end
 -- Show the option panel --

@@ -135,7 +135,7 @@ local function CreateGlobalVariables()
 		end,
 		funcOnEnter = function(button)
 			MenuUtil.ShowTooltip(button, function(tooltip)
-			tooltip:SetOwner(AddonCompartmentFrame, "ANCHOR_TOP", 0, 0)
+			tooltip:SetOwner(AddonCompartmentFrame, "ANCHOR_LEFT", 0, 0)
 			tooltip:SetText(C.Main:WrapTextInColorCode(prefixTip).."|n"..G.BUTTON_L_CLICK..": "..G.TIP_OPEN_SETTINGS_MAIN)
 			end)
 		end,
@@ -162,6 +162,7 @@ local function FirstTimeSavedVariables()
 	if loadable and loaded then
 		VDW.SSOA.VDWS = true
 	end
+	if SSOAsettings.Created == nil then SSOAsettings.Created = {Pray = true,} end
 end
 -- function to play the emote --
 local function playEmote(var1)
@@ -182,6 +183,8 @@ local function EventsTime(self, event, arg1, arg2, arg3, arg4)
 	if event == "PLAYER_LOGIN" then
 		CreateGlobalVariables()
 		FirstTimeSavedVariables()
+	elseif event == "AUCTION_HOUSE_AUCTION_CREATED" then
+		if SSOAsettings.Created.Pray then DoEmote("pray", "none") end
 	elseif event == "AUCTION_HOUSE_SHOW_FORMATTED_NOTIFICATION" then
 		t = GameTime_GetTime(false)
 		if arg1 == 0 then
