@@ -2,18 +2,7 @@
 ## IconAtlas: Relic-Holy-TraitBG
 ## Title: Sweet |cFFEEE991Sound|r of |cFFEEE991Auction|r House Options
 ## Notes: |cFFB09F8DOptions for the Sweet |cFFEEE991Sound|r of |cFFEEE991Auction|r House!|r
-## Version: 2.00.03
-## Category: Auctions
-## Category-deDE: Auktionen
-## Category-esES: Subastas
-## Category-esMX: Subastas
-## Category-frFR: Ventes
-## Category-itIT: Aste
-## Category-koKR: 경매
-## Category-ptBR: Leilões
-## Category-ruRU: Аукционы
-## Category-zhCN: 拍卖
-## Category-zhTW: 拍賣
+## Version: 2.00.04
 ## Group: VDWS
 ## Dependencies: SSOA
 ## LoadOnDemand: 1
