@@ -90,7 +90,7 @@ ssoaOptions2Box1EditBox1.WritingLine:SetScript("OnEnterPressed", function(self)
 			end
 		end
 		number = number + 1
-		SSOAprofiles[name] = {settings = SSOAsettings, localization = SSOAspecialSettings.LastLocation}
+		SSOAprofiles[name] = {settings = SSOAsettings}
 		C_UI.Reload()
 	else
 		DEFAULT_CHAT_FRAME:AddMessage(C.Main:WrapTextInColorCode(prefixChat.." "..L.P_WRN_NEED))
@@ -176,7 +176,6 @@ local function LoadingProfiles() -- vdwLoadingProfiles(asv1, asv2, asv3, txt1)
 			_G["ssoaOptions2Box2PopOut1Choice"..counterLoading]:HookScript("OnClick", function(self, button, down)
 				if button == "LeftButton" and down == false then
 					SSOAsettings = SSOAprofiles[k]["settings"]
-					SSOAspecialSettings.LastLocation = SSOAprofiles[k]["localization"]
 					C_UI.Reload()
 				end
 			end)
