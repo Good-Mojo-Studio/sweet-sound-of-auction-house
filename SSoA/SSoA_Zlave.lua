@@ -1,13 +1,12 @@
--- some variables --
+-- some variables
 VDW.SSOA = VDW.SSOA or {}
 local G = VDW.Local.Override
 local C = VDW.GetAddonColors("SSOA")
 local prefixTip = VDW.Prefix("SSOA")
-local prefixChat = VDW.PrefixChat("SSOA")
--- local-only strings for THIS file --
+-- local strings
 local L = (function()
 	local base = {
--- warnings --
+-- warnings
 		WRN_BID_PLACED = " There was a bid on your Auction",
 		WRN_AUCTION_REMOVED = " Your Auction have been removed!",
 		WRN_AUCTION_WON = " You have won the Auction of %s",
@@ -15,10 +14,10 @@ local L = (function()
 		WRN_AUCTION_SOLD = " Your Auction of %s have been sold!",
 		WRN_AUCTION_EXPIRED = " Your Auction of %s have been expired!",
 	}
--- override --
+-- override
 	local o = {
 		frFR = {
--- warnings --
+-- warnings
 			WRN_BID_PLACED = " Une enchere a ete placee sur votre vente de %s",
 			WRN_AUCTION_REMOVED = " Votre vente aux encheres a ete retiree !",
 			WRN_AUCTION_WON = " Vous avez remporte la vente aux encheres de %s",
@@ -27,7 +26,7 @@ local L = (function()
 			WRN_AUCTION_EXPIRED = " Votre vente aux encheres de %s a expire !",
 		},
 		deDE = {
--- warnings --
+-- warnings
 			WRN_BID_PLACED = " Es wurde ein Gebot auf deine Auktion von %s abgegeben",
 			WRN_AUCTION_REMOVED = " Deine Auktion wurde entfernt!",
 			WRN_AUCTION_WON = " Du hast die Auktion von %s gewonnen",
@@ -36,7 +35,7 @@ local L = (function()
 			WRN_AUCTION_EXPIRED = " Deine Auktion von %s ist abgelaufen!",
 		},
 		esES = {
--- warnings --
+-- warnings
 			WRN_BID_PLACED = " Se ha realizado una puja en tu subasta de %s",
 			WRN_AUCTION_REMOVED = " Tu subasta ha sido eliminada!",
 			WRN_AUCTION_WON = " Has ganado la subasta de %s",
@@ -45,7 +44,7 @@ local L = (function()
 			WRN_AUCTION_EXPIRED = " Tu subasta de %s ha expirado!",
 		},
 		esMX = {
--- warnings --
+-- warnings
 			WRN_BID_PLACED = " Hubo una puja en tu subasta de %s",
 			WRN_AUCTION_REMOVED = " Tu subasta fue eliminada!",
 			WRN_AUCTION_WON = " Ganaste la subasta de %s",
@@ -54,7 +53,7 @@ local L = (function()
 			WRN_AUCTION_EXPIRED = " Tu subasta de %s expiro!",
 		},
 		ptBR = {
--- warnings --
+-- warnings
 			WRN_BID_PLACED = " Houve um lance no seu leilao de %s",
 			WRN_AUCTION_REMOVED = " Seu leilao foi removido!",
 			WRN_AUCTION_WON = " Voce ganhou o leilao de %s",
@@ -63,7 +62,7 @@ local L = (function()
 			WRN_AUCTION_EXPIRED = " Seu leilao de %s expirou!",
 		},
 		itIT = {
--- warnings --
+-- warnings
 			WRN_BID_PLACED = " E stata fatta un’offerta sulla tua asta di %s",
 			WRN_AUCTION_REMOVED = " La tua asta e stata rimossa!",
 			WRN_AUCTION_WON = " Hai vinto l’asta di %s",
@@ -71,12 +70,44 @@ local L = (function()
 			WRN_AUCTION_SOLD = " La tua asta di %s e stata venduta!",
 			WRN_AUCTION_EXPIRED = " La tua asta di %s e scaduta!",
 		},
-		ruRU = base,
-		zhCN = base,
-		zhTW = base,
-		koKR = base,
+-- warnings
+		ruRU = {
+			WRN_BID_PLACED = " По вашему лоту сделана ставка",
+			WRN_AUCTION_REMOVED = " Ваш лот был снят с аукциона!",
+			WRN_AUCTION_WON = " Вы выиграли аукцион на предмет %s",
+			WRN_AUCTION_OUTBID = " Ваша ставка на предмет %s перебита",
+			WRN_AUCTION_SOLD = " Ваш лот %s продан!",
+			WRN_AUCTION_EXPIRED = " Срок действия вашего лота %s истёк!",
+		},
+-- warnings
+		zhCN = {
+			WRN_BID_PLACED = " 有人对你的拍卖出价了",
+			WRN_AUCTION_REMOVED = " 你的拍卖已被移除！",
+			WRN_AUCTION_WON = " 你赢得了%s的拍卖",
+			WRN_AUCTION_OUTBID = " 有人在%s的拍卖中出价超过了你",
+			WRN_AUCTION_SOLD = " 你的%s拍卖已售出！",
+			WRN_AUCTION_EXPIRED = " 你的%s拍卖已过期！",
+		},
+-- warnings
+		zhTW = {
+			WRN_BID_PLACED = " 有人對你的拍賣出價了",
+			WRN_AUCTION_REMOVED = " 你的拍賣已被移除！",
+			WRN_AUCTION_WON = " 你贏得了%s的拍賣",
+			WRN_AUCTION_OUTBID = " 有人在%s的拍賣中出價超過了你",
+			WRN_AUCTION_SOLD = " 你的%s拍賣已售出！",
+			WRN_AUCTION_EXPIRED = " 你的%s拍賣已過期！",
+		},
+-- warnings
+		koKR = {
+			WRN_BID_PLACED = " 내 경매에 입찰이 들어왔습니다",
+			WRN_AUCTION_REMOVED = " 내 경매가 취소되었습니다!",
+			WRN_AUCTION_WON = " %s 경매에서 낙찰되었습니다",
+			WRN_AUCTION_OUTBID = " 누군가 %s 경매에서 더 높은 입찰을 했습니다",
+			WRN_AUCTION_SOLD = " 내 %s 경매가 판매되었습니다!",
+			WRN_AUCTION_EXPIRED = " 내 %s 경매가 만료되었습니다!",
+		},
 	}
--- function --
+-- function
 	local loc = GetLocale()
 	local ov = o[loc]
 	if type(ov) == "string" then ov = o[ov] end
@@ -85,16 +116,16 @@ local L = (function()
 	end
 	return base
 end)()
--- some variables --
+-- some variables
 local function CreateGlobalVariables()
--- function for opening the options --
+-- function for opening the options
 	local function ShowMenu()
 		if not InCombatLockdown() then
 			local _, loaded = C_AddOns.IsAddOnLoaded("SSOA_Options")
 			local loadable, reason = C_AddOns.IsAddOnLoadable("SSOA_Options" , nil , true)
 			if reason == "MISSING" then
 				C_Sound.PlayVocalErrorSound(48)
-				DEFAULT_CHAT_FRAME:AddMessage(C.Main:WrapTextInColorCode(prefixChat.." "..string.format(G.WRN_ADDON_IS_STATE, C.High:WrapTextInColorCode("Sweet Sounds of Auction House Options"), reason)))
+				DEFAULT_CHAT_FRAME:AddMessage(C.Main:WrapTextInColorCode(VDW.PrefixChat("SSOA").." "..string.format(G.WRN_ADDON_IS_STATE, C.High:WrapTextInColorCode("Sweet Sounds of Auction House Options"), reason)))
 				UIErrorsFrame:AddExternalWarningMessage(string.format(G.WRN_ADDON_IS_STATE, C.High:WrapTextInColorCode("Sweet Sounds of Auction House Options"), reason))
 			elseif loadable and not loaded then
 				C_AddOns.LoadAddOn("SSOA_Options")
@@ -111,18 +142,18 @@ local function CreateGlobalVariables()
 				end
 			else
 				C_Sound.PlayVocalErrorSound(48)
-				DEFAULT_CHAT_FRAME:AddMessage(C.Main:WrapTextInColorCode(prefixChat.." "..string.format(G.WRN_ADDON_IS_STATE, C_AddOns.GetAddOnMetadata("SSOA_Options", "Title"), reason)))
+				DEFAULT_CHAT_FRAME:AddMessage(C.Main:WrapTextInColorCode(VDW.PrefixChat("SSOA").." "..string.format(G.WRN_ADDON_IS_STATE, C_AddOns.GetAddOnMetadata("SSOA_Options", "Title"), reason)))
 				UIErrorsFrame:AddExternalWarningMessage(string.format(G.WRN_ADDON_IS_STATE, C_AddOns.GetAddOnMetadata("SSOA_Options", "Title"), reason))
 			end
 		else
 			C_Sound.PlayVocalErrorSound(48)
-			DEFAULT_CHAT_FRAME:AddMessage(C.Main:WrapTextInColorCode(prefixChat.." "..G.WRN_COMBAT_LOCKDOWN))
+			DEFAULT_CHAT_FRAME:AddMessage(C.Main:WrapTextInColorCode(VDW.PrefixChat("SSOA").." "..G.WRN_COMBAT_LOCKDOWN))
 			UIErrorsFrame:AddExternalWarningMessage(G.WRN_COMBAT_LOCKDOWN)
 		end
 	end
--- slash command --
+-- slash command
 	RegisterNewSlashCommand(ShowMenu, "ssoa", "sweetsoundofauctionhouse")
--- mini map button functions --
+-- mini map button functions
 	AddonCompartmentFrame:RegisterAddon({
 		text = C.Main:WrapTextInColorCode(C_AddOns.GetAddOnMetadata("SSOA", "Title")),
 		icon = C_AddOns.GetAddOnMetadata("SSOA", "IconAtlas"),
@@ -141,7 +172,7 @@ local function CreateGlobalVariables()
 		end,
 	})
 end
--- loading first time the variables --
+-- loading first time the variables
 local function FirstTimeSavedVariables()
 	if SSOAprofiles == nil then SSOAprofiles ={} end
 	if SSOAsettings == nil then
@@ -161,21 +192,19 @@ local function FirstTimeSavedVariables()
 	end
 	if SSOAsettings.Created == nil then SSOAsettings.Created = {Pray = true,} end
 end
--- function to play the emote --
+-- function to play the emote
 local function playEmote(var1)
 	if var1 ~= "None" then
 		DoEmote(var1, "none")
 	end
 end
--- function to play the sound --
+-- function to play the sound
 local function playSound(var1)
 	if var1 ~= "None" then
 		PlaySoundFile("Interface\\AddOns\\VDW\\media\\sounds\\"..var1..".mp3", "Master")
 	end
 end
--- some local variables --
-local t
--- events time --
+-- events time
 local function EventsTime(self, event, arg1, arg2, arg3, arg4)
 	if event == "PLAYER_LOGIN" then
 		CreateGlobalVariables()
@@ -183,60 +212,59 @@ local function EventsTime(self, event, arg1, arg2, arg3, arg4)
 	elseif event == "AUCTION_HOUSE_AUCTION_CREATED" then
 		if SSOAsettings.Created.Pray then DoEmote("pray", "none") end
 	elseif event == "AUCTION_HOUSE_SHOW_FORMATTED_NOTIFICATION" then
-		t = GameTime_GetTime(false)
 		if arg1 == 0 then
 			playEmote(SSOAsettings.BidPlaced.Emotes)
 			playSound(SSOAsettings.BidPlaced.Sounds)
 			if VDW.SSOA.VDWS and VDWSsettings.Looty.SSOA then
-				vdwsLooty:AddMessage(C.Main:WrapTextInColorCode(prefixChat..L.WRN_BID_PLACED))
+				vdwsLooty:AddMessage(C.Main:WrapTextInColorCode(VDW.PrefixChat("SSOA")..L.WRN_BID_PLACED))
 			end
 			if SSOAsettings.BidPlaced.Chat then
-				DEFAULT_CHAT_FRAME:AddMessage(C.Main:WrapTextInColorCode(prefixChat..L.WRN_BID_PLACED))
+				DEFAULT_CHAT_FRAME:AddMessage(C.Main:WrapTextInColorCode(VDW.PrefixChat("SSOA")..L.WRN_BID_PLACED))
 			end
 		elseif arg1 == 1 then
 			playEmote(SSOAsettings.Removed.Emotes)
 			playSound(SSOAsettings.Removed.Sounds)
 			if VDW.SSOA.VDWS and VDWSsettings.Looty.SSOA then
-				vdwsLooty:AddMessage(C.Main:WrapTextInColorCode(prefixChat..L.WRN_AUCTION_REMOVED))
+				vdwsLooty:AddMessage(C.Main:WrapTextInColorCode(VDW.PrefixChat("SSOA")..L.WRN_AUCTION_REMOVED))
 			end
 			if SSOAsettings.Removed.Chat then
-				DEFAULT_CHAT_FRAME:AddMessage(C.Main:WrapTextInColorCode(prefixChat..L.WRN_AUCTION_REMOVED))
+				DEFAULT_CHAT_FRAME:AddMessage(C.Main:WrapTextInColorCode(VDW.PrefixChat("SSOA")..L.WRN_AUCTION_REMOVED))
 			end
 		elseif arg1 == 2 then
 			playEmote(SSOAsettings.Won.Emotes)
 			playSound(SSOAsettings.Won.Sounds)
 			if VDW.SSOA.VDWS and VDWSsettings.Looty.SSOA then
-				vdwsLooty:AddMessage(C.Main:WrapTextInColorCode(prefixChat..string.format(L.WRN_AUCTION_WON, C.High:WrapTextInColorCode(arg2)))) 
+				vdwsLooty:AddMessage(C.Main:WrapTextInColorCode(VDW.PrefixChat("SSOA")..string.format(L.WRN_AUCTION_WON, C.High:WrapTextInColorCode(arg2)))) 
 			end
 			if SSOAsettings.Won.Chat then
-				DEFAULT_CHAT_FRAME:AddMessage(C.Main:WrapTextInColorCode(prefixChat..string.format(L.WRN_AUCTION_WON, C.High:WrapTextInColorCode(arg2)))) 
+				DEFAULT_CHAT_FRAME:AddMessage(C.Main:WrapTextInColorCode(VDW.PrefixChat("SSOA")..string.format(L.WRN_AUCTION_WON, C.High:WrapTextInColorCode(arg2)))) 
 			end
 		elseif arg1 == 3 then
 			playEmote(SSOAsettings.Outbid.Emotes)
 			playSound(SSOAsettings.Outbid.Sounds)
 			if VDW.SSOA.VDWS and VDWSsettings.Looty.SSOA then
-				vdwsLooty:AddMessage(C.Main:WrapTextInColorCode(prefixChat..string.format(L.WRN_AUCTION_OUTBID, C.High:WrapTextInColorCode(arg2))))
+				vdwsLooty:AddMessage(C.Main:WrapTextInColorCode(VDW.PrefixChat("SSOA")..string.format(L.WRN_AUCTION_OUTBID, C.High:WrapTextInColorCode(arg2))))
 			end
 			if SSOAsettings.Outbid.Chat then
-				DEFAULT_CHAT_FRAME:AddMessage(C.Main:WrapTextInColorCode(prefixChat..string.format(L.WRN_AUCTION_OUTBID, C.High:WrapTextInColorCode(arg2))))
+				DEFAULT_CHAT_FRAME:AddMessage(C.Main:WrapTextInColorCode(VDW.PrefixChat("SSOA")..string.format(L.WRN_AUCTION_OUTBID, C.High:WrapTextInColorCode(arg2))))
 			end
 		elseif arg1 == 4 then
 			playEmote(SSOAsettings.Sold.Emotes)
 			playSound(SSOAsettings.Sold.Sounds)
 			if VDW.SSOA.VDWS and VDWSsettings.Looty.SSOA then
-				vdwsLooty:AddMessage(C.Main:WrapTextInColorCode(prefixChat..string.format(L.WRN_AUCTION_SOLD, C.High:WrapTextInColorCode(arg2))))
+				vdwsLooty:AddMessage(C.Main:WrapTextInColorCode(VDW.PrefixChat("SSOA")..string.format(L.WRN_AUCTION_SOLD, C.High:WrapTextInColorCode(arg2))))
 			end
 			if SSOAsettings.Sold.Chat then
-				DEFAULT_CHAT_FRAME:AddMessage(C.Main:WrapTextInColorCode(prefixChat..string.format(L.WRN_AUCTION_SOLD, C.High:WrapTextInColorCode(arg2))))
+				DEFAULT_CHAT_FRAME:AddMessage(C.Main:WrapTextInColorCode(VDW.PrefixChat("SSOA")..string.format(L.WRN_AUCTION_SOLD, C.High:WrapTextInColorCode(arg2))))
 			end
 		elseif arg1 == 5 then
 			playEmote(SSOAsettings.Expired.Emotes)
 			playSound(SSOAsettings.Expired.Sounds)
 			if VDW.SSOA.VDWS and VDWSsettings.Looty.SSOA then
-				vdwsLooty:AddMessage(C.Main:WrapTextInColorCode(prefixChat..string.format(L.WRN_AUCTION_EXPIRED, C.High:WrapTextInColorCode(arg2))))
+				vdwsLooty:AddMessage(C.Main:WrapTextInColorCode(VDW.PrefixChat("SSOA")..string.format(L.WRN_AUCTION_EXPIRED, C.High:WrapTextInColorCode(arg2))))
 			end
 			if SSOAsettings.Expired.Chat then
-				DEFAULT_CHAT_FRAME:AddMessage(C.Main:WrapTextInColorCode(prefixChat..string.format(L.WRN_AUCTION_EXPIRED, C.High:WrapTextInColorCode(arg2))))
+				DEFAULT_CHAT_FRAME:AddMessage(C.Main:WrapTextInColorCode(VDW.PrefixChat("SSOA")..string.format(L.WRN_AUCTION_EXPIRED, C.High:WrapTextInColorCode(arg2))))
 			end
 		end
 	end
