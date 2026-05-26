@@ -85,7 +85,7 @@ ssoaOptions2Box1EditBox1.WritingLine:SetScript("OnEnterPressed", function(self)
 				NameExist = false
 			end
 			if NameExist then
-				DEFAULT_CHAT_FRAME:AddMessage(C.Main:WrapTextInColorCode(prefixChat.." "..L.P_WRN_EXIST))
+				DEFAULT_CHAT_FRAME:AddMessage(C.Main:WrapTextInColorCode(VDW.PrefixChat("SSOA").." "..L.P_WRN_EXIST))
 				return
 			end
 		end
@@ -93,7 +93,7 @@ ssoaOptions2Box1EditBox1.WritingLine:SetScript("OnEnterPressed", function(self)
 		SSOAprofiles[name] = {settings = SSOAsettings}
 		C_UI.Reload()
 	else
-		DEFAULT_CHAT_FRAME:AddMessage(C.Main:WrapTextInColorCode(prefixChat.." "..L.P_WRN_NEED))
+		DEFAULT_CHAT_FRAME:AddMessage(C.Main:WrapTextInColorCode(VDW.PrefixChat("SSOA").." "..L.P_WRN_NEED))
 	end
 end)
 -- Pop out 1 Buttons loading profiles  --
@@ -114,7 +114,7 @@ ssoaOptions2Box2PopOut1:HookScript("OnClick", function(self, button, down)
 				ssoaOptions2Box2PopOut1Choice1:Hide()
 			end
 		else
-			DEFAULT_CHAT_FRAME:AddMessage(C.Main:WrapTextInColorCode(prefixChat.." "..L.P_WRN_LOAD))
+			DEFAULT_CHAT_FRAME:AddMessage(C.Main:WrapTextInColorCode(VDW.PrefixChat("SSOA").." "..L.P_WRN_LOAD))
 		end
 	end
 end)
@@ -136,7 +136,7 @@ ssoaOptions2Box3PopOut1:HookScript("OnClick", function(self, button, down)
 				ssoaOptions2Box3PopOut1Choice1:Hide()
 			end
 		else
-			DEFAULT_CHAT_FRAME:AddMessage(C.Main:WrapTextInColorCode(prefixChat.." "..L.P_WRN_DELETE))
+			DEFAULT_CHAT_FRAME:AddMessage(C.Main:WrapTextInColorCode(VDW.PrefixChat("SSOA").." "..L.P_WRN_DELETE))
 		end
 	end
 end)

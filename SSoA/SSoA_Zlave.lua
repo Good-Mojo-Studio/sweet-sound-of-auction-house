@@ -1,5 +1,5 @@
 -- some variables
-VDW.SSOA = VDW.SSOA or {}
+VDWvariables.SSOA = VDWvariables.SSOA or {}
 local G = VDW.Local.Override
 local C = VDW.GetAddonColors("SSOA")
 local prefixTip = VDW.Prefix("SSOA")
@@ -185,12 +185,12 @@ local function FirstTimeSavedVariables()
 			Removed = {Emotes = "OOPS", Sounds = "None", Chat = true,},
 		}
 	end
+	if SSOAsettings.Created == nil then SSOAsettings.Created = {Pray = true,} end
 	local _, loaded = C_AddOns.IsAddOnLoaded("VDWS")
 	local loadable, reason = C_AddOns.IsAddOnLoadable("VDWS" , nil , true)
 	if loadable and loaded then
-		VDW.SSOA.VDWS = true
+		VDWvariables.SSOA.VDWS = true
 	end
-	if SSOAsettings.Created == nil then SSOAsettings.Created = {Pray = true,} end
 end
 -- function to play the emote
 local function playEmote(var1)
@@ -215,7 +215,7 @@ local function EventsTime(self, event, arg1, arg2, arg3, arg4)
 		if arg1 == 0 then
 			playEmote(SSOAsettings.BidPlaced.Emotes)
 			playSound(SSOAsettings.BidPlaced.Sounds)
-			if VDW.SSOA.VDWS and VDWSsettings.Looty.SSOA then
+			if VDWvariables.SSOA.VDWS and VDWSsettings.Looty.SSOA then
 				vdwsLooty:AddMessage(C.Main:WrapTextInColorCode(VDW.PrefixChat("SSOA")..L.WRN_BID_PLACED))
 			end
 			if SSOAsettings.BidPlaced.Chat then
@@ -224,7 +224,7 @@ local function EventsTime(self, event, arg1, arg2, arg3, arg4)
 		elseif arg1 == 1 then
 			playEmote(SSOAsettings.Removed.Emotes)
 			playSound(SSOAsettings.Removed.Sounds)
-			if VDW.SSOA.VDWS and VDWSsettings.Looty.SSOA then
+			if VDWvariables.SSOA.VDWS and VDWSsettings.Looty.SSOA then
 				vdwsLooty:AddMessage(C.Main:WrapTextInColorCode(VDW.PrefixChat("SSOA")..L.WRN_AUCTION_REMOVED))
 			end
 			if SSOAsettings.Removed.Chat then
@@ -233,7 +233,7 @@ local function EventsTime(self, event, arg1, arg2, arg3, arg4)
 		elseif arg1 == 2 then
 			playEmote(SSOAsettings.Won.Emotes)
 			playSound(SSOAsettings.Won.Sounds)
-			if VDW.SSOA.VDWS and VDWSsettings.Looty.SSOA then
+			if VDWvariables.SSOA.VDWS and VDWSsettings.Looty.SSOA then
 				vdwsLooty:AddMessage(C.Main:WrapTextInColorCode(VDW.PrefixChat("SSOA")..string.format(L.WRN_AUCTION_WON, C.High:WrapTextInColorCode(arg2)))) 
 			end
 			if SSOAsettings.Won.Chat then
@@ -242,7 +242,7 @@ local function EventsTime(self, event, arg1, arg2, arg3, arg4)
 		elseif arg1 == 3 then
 			playEmote(SSOAsettings.Outbid.Emotes)
 			playSound(SSOAsettings.Outbid.Sounds)
-			if VDW.SSOA.VDWS and VDWSsettings.Looty.SSOA then
+			if VDWvariables.SSOA.VDWS and VDWSsettings.Looty.SSOA then
 				vdwsLooty:AddMessage(C.Main:WrapTextInColorCode(VDW.PrefixChat("SSOA")..string.format(L.WRN_AUCTION_OUTBID, C.High:WrapTextInColorCode(arg2))))
 			end
 			if SSOAsettings.Outbid.Chat then
@@ -251,7 +251,7 @@ local function EventsTime(self, event, arg1, arg2, arg3, arg4)
 		elseif arg1 == 4 then
 			playEmote(SSOAsettings.Sold.Emotes)
 			playSound(SSOAsettings.Sold.Sounds)
-			if VDW.SSOA.VDWS and VDWSsettings.Looty.SSOA then
+			if VDWvariables.SSOA.VDWS and VDWSsettings.Looty.SSOA then
 				vdwsLooty:AddMessage(C.Main:WrapTextInColorCode(VDW.PrefixChat("SSOA")..string.format(L.WRN_AUCTION_SOLD, C.High:WrapTextInColorCode(arg2))))
 			end
 			if SSOAsettings.Sold.Chat then
@@ -260,7 +260,7 @@ local function EventsTime(self, event, arg1, arg2, arg3, arg4)
 		elseif arg1 == 5 then
 			playEmote(SSOAsettings.Expired.Emotes)
 			playSound(SSOAsettings.Expired.Sounds)
-			if VDW.SSOA.VDWS and VDWSsettings.Looty.SSOA then
+			if VDWvariables.SSOA.VDWS and VDWSsettings.Looty.SSOA then
 				vdwsLooty:AddMessage(C.Main:WrapTextInColorCode(VDW.PrefixChat("SSOA")..string.format(L.WRN_AUCTION_EXPIRED, C.High:WrapTextInColorCode(arg2))))
 			end
 			if SSOAsettings.Expired.Chat then
