@@ -1,8 +1,8 @@
 ## Interface: 120005
-## IconAtlas: Relic-Holy-TraitBG
-## Title: Sweet |cFFEEE991Sound|r of |cFFEEE991Auction|r House Options
-## Notes: |cFFB09F8DOptions for the Sweet |cFFEEE991Sound|r of |cFFEEE991Auction|r House!|r
-## Version: 2.00.07
+## IconAtlas: common-icon-sound-pressed
+## Title: Sweet |cFFFFBF00Sound|r of |cFFFFBF00Auction|r House Options
+## Notes: |cFFFFDF80Options for the Sweet |cFFFFBF00Sound|r of |cFFFFBF00Auction|r House!|r
+## Version: 2.00.08
 ## Group: VDWS
 ## Dependencies: SSOA
 ## LoadOnDemand: 1

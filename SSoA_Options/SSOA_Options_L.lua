@@ -1,5 +1,5 @@
 -- some variables --
-VDW.SSOA.Local = VDW.SSOA.Local or (function()
+VDWvariables.SSOA.Local = VDWvariables.SSOA.Local or (function()
 	local base = {
 		TIP_CLOSE_PANEL = "Close this panel!",
 -- tab --

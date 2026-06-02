@@ -1,6 +1,6 @@
 -- some variables --
 local G = VDW.Local.Override
-local L = VDW.SSOA.Local
+local L = VDWvariables.SSOA.Local
 local C = VDW.GetAddonColors("SSOA")
 local prefixTip = VDW.Prefix("SSOA")
 local prefixChat = VDW.PrefixChat("SSOA")
