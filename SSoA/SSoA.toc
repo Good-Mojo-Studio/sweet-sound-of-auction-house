@@ -1,8 +1,8 @@
-## Interface: 120005
+## Interface: 120007
 ## IconAtlas: common-icon-sound-pressed
 ## Title: Sweet |cFFFFBF00Sound|r of |cFFFFBF00Auction|r House
 ## Notes: |cFFFFDF80Aah! the Sweet |cFFFFBF00Sound|r of |cFFFFBF00Auction|r House|r!
-## Version: 2.00.08
+## Version: 2.01.00
 ## Group: VDWS
 ## Dependencies: VDW
 ## DefaultState: enabled

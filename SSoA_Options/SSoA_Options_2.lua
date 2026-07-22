@@ -1,241 +1,112 @@
--- some variables --
-local G = VDW.Local.Override
-local L = VDWvariables.SSOA.Local
-local C = VDW.GetAddonColors("SSOA")
+-- some variables
+local Color = VDW.GetAddonColors("SSOA")
 local prefixTip = VDW.Prefix("SSOA")
-local prefixChat = VDW.PrefixChat("SSOA")
+local name = ""
 local NameExist = false
+local Keys = 0
 local maxW = 160
 local finalW = 0
-local  number = 0
-local counterLoading = 0
-local counterDeleting = 0
--- Taking care of the option panel --
-ssoaOptions2:SetWidth(576)
-ssoaOptions2:ClearAllPoints()
-ssoaOptions2:SetPoint("TOPLEFT", ssoaOptions00, "TOPLEFT", 0, 0)
--- Background of the option panel --
-ssoaOptions2.BGtexture:SetTexture("Interface\\BlackMarket\\BlackMarketBackground-Tile.blp", "CLAMP", "CLAMP", "NEAREST")
-ssoaOptions2.BGtexture:SetVertexColor(C.High:GetRGB())
-ssoaOptions2.BGtexture:SetDesaturation(0.3)
--- Title of the option panel --
-ssoaOptions2.Title:SetTextColor(C.Main:GetRGB())
-ssoaOptions2.Title:SetText(prefixTip.."|nVersion: "..C.High:WrapTextInColorCode(C_AddOns.GetAddOnMetadata("SSOA", "Version")))
--- Top text of the option panel --
-ssoaOptions2.TopTxt:SetTextColor(C.Main:GetRGB())
-ssoaOptions2.TopTxt:SetText(L.P_TITLE)
--- Bottom right text of the option panel --
-ssoaOptions2.BottomRightTxt:SetTextColor(C.Main:GetRGB())
-ssoaOptions2.BottomRightTxt:SetText(C_AddOns.GetAddOnMetadata("SSOA", "X-Website"))
--- taking care of the boxes --
-ssoaOptions2Box1.Title:SetText(L.P_SUB_CREATE)
-ssoaOptions2Box2.Title:SetText(L.P_SUB_LOAD)
-ssoaOptions2Box2:SetPoint("TOPLEFT", ssoaOptions2Box1, "BOTTOMLEFT", 0, 0)
-ssoaOptions2Box3.Title:SetText(L.P_SUB_DELETE)
-ssoaOptions2Box3:SetPoint("TOPLEFT", ssoaOptions2Box2, "BOTTOMLEFT", 0, 0)
-ssoaOptions2Box4.Title:SetText("Important Notes")
-ssoaOptions2Box4:SetPoint("TOPLEFT", ssoaOptions2Box3, "BOTTOMLEFT", 0, 0)
--- Coloring the boxes --
+local counter = 0
+-- finding keys
+for k, v in pairs(SSOAprofiles) do
+	Keys = Keys + 1
+end
+-- create panel
+VDW.CreateOptionsPanel(ssoaOptions.Panel2, VDW.Background.SSOA, Color.Main, Color.High, 0, "SSOA")
+ssoaOptions.Panel2.TopTxt:SetText(VDWtranslate.Global.P_TITLE)
+ssoaOptions.Panel2.Box1.Title:SetText(VDWtranslate.Global.P_SUB_CREATE)
+ssoaOptions.Panel2.Box2.Title:SetText(VDWtranslate.Global.P_SUB_LOAD)
+ssoaOptions.Panel2.Box3.Title:SetText(VDWtranslate.Global.P_SUB_DELETE)
+ssoaOptions.Panel2.Box4.Title:SetText(VDWtranslate.Global.IMPORTANT_NOTES)
 for i = 1, 4, 1 do
-	_G["ssoaOptions2Box"..i].Title:SetTextColor(C.Main:GetRGB())
-	_G["ssoaOptions2Box"..i].BorderTop:SetVertexColor(C.High:GetRGB())
-	_G["ssoaOptions2Box"..i].BorderBottom:SetVertexColor(C.High:GetRGB())
-	_G["ssoaOptions2Box"..i].BorderLeft:SetVertexColor(C.High:GetRGB())
-	_G["ssoaOptions2Box"..i].BorderRight:SetVertexColor(C.High:GetRGB())
+	VDW.CreateOptionsBox(ssoaOptions.Panel2, i, Color.Main, Color.High)
 end
--- Coloring the pop out buttons --
-local function ColoringPopOutButtons(k, var1)
-	_G["ssoaOptions2Box"..k.."PopOut"..var1].Text:SetTextColor(C.Main:GetRGB())
-	_G["ssoaOptions2Box"..k.."PopOut"..var1].Title:SetTextColor(C.High:GetRGB())
-	_G["ssoaOptions2Box"..k.."PopOut"..var1].NormalTexture:SetVertexColor(C.High:GetRGB())
-	_G["ssoaOptions2Box"..k.."PopOut"..var1].HighlightTexture:SetVertexColor(C.Main:GetRGB())
-	_G["ssoaOptions2Box"..k.."PopOut"..var1].PushedTexture:SetVertexColor(C.High:GetRGB())
-end
--- taking care of the edit box --
--- colors --
-ssoaOptions2Box1EditBox1["GlowTopLeft"]:SetVertexColor(C.Main:GetRGB())
-ssoaOptions2Box1EditBox1["GlowTopRight"]:SetVertexColor(C.Main:GetRGB())
-ssoaOptions2Box1EditBox1["GlowBottomLeft"]:SetVertexColor(C.Main:GetRGB())
-ssoaOptions2Box1EditBox1["GlowBottomRight"]:SetVertexColor(C.Main:GetRGB())
-ssoaOptions2Box1EditBox1["GlowTop"]:SetVertexColor(C.Main:GetRGB())
-ssoaOptions2Box1EditBox1["GlowBottom"]:SetVertexColor(C.Main:GetRGB())
-ssoaOptions2Box1EditBox1["GlowLeft"]:SetVertexColor(C.Main:GetRGB())
-ssoaOptions2Box1EditBox1["GlowRight"]:SetVertexColor(C.Main:GetRGB())
--- width and height --
-local fontFile, height, flags = ssoaOptions2Box1EditBox1.WritingLine:GetFont()
-ssoaOptions2Box1EditBox1.WritingLine:SetHeight(height)
-ssoaOptions2Box1EditBox1:SetWidth(ssoaOptions2Box1:GetWidth()*0.65)
-ssoaOptions2Box1EditBox1:SetHeight(ssoaOptions2Box1EditBox1.WritingLine:GetHeight()*1.75)
-ssoaOptions2Box1EditBox1.WritingLine:SetWidth(ssoaOptions2Box1EditBox1:GetWidth()*0.95)
--- enter --
-ssoaOptions2Box1EditBox1:HookScript("OnEnter", function(self)
-	VDW.Tooltip_Show(self, prefixTip, L.P_TIP_CREATE, C.Main)
+-- Box 1, EditBox 1, profile save
+VDW.CreateEditBox(ssoaOptions.Panel2, 1, 1, Color.High)
+ssoaOptions.Panel2.Box1.EditBox1.WritingLine:HookScript("OnEnter", function(self)
+	VDW.Tooltip_Show(self, prefixTip, VDWtranslate.Global.P_TIP_CREATE, Color.Main, "Left")
 end)
--- leave --
-ssoaOptions2Box1EditBox1:HookScript("OnLeave", function(self) VDW.Tooltip_Hide() end)
--- pressing enter --
-ssoaOptions2Box1EditBox1.WritingLine:SetScript("OnEnterPressed", function(self)
+-- pressing enter
+ssoaOptions.Panel2.Box1.EditBox1.WritingLine:SetScript("OnEnterPressed", function(self)
 	if self:HasText() then
 		EditBox_HighlightText(self)
-		local name = self:GetText()
+		name = self:GetText()
+		NameExist = false
 		for k, v in pairs(SSOAprofiles) do
-			if k == name then
-				NameExist = true
-			else
-				NameExist = false
-			end
+			if k == name then NameExist = true end
 			if NameExist then
-				DEFAULT_CHAT_FRAME:AddMessage(C.Main:WrapTextInColorCode(VDW.PrefixChat("SSOA").." "..L.P_WRN_EXIST))
+				DEFAULT_CHAT_FRAME:AddMessage(Color.Main:WrapTextInColorCode(VDW.PrefixChat("SSOA").." "..VDWtranslate.Global.P_WRN_EXIST))
+				UIErrorsFrame:AddExternalWarningMessage(VDW.PrefixError("SSOA").." "..VDWtranslate.Global.P_WRN_EXIST)
 				return
 			end
 		end
-		number = number + 1
 		SSOAprofiles[name] = {settings = SSOAsettings}
 		C_UI.Reload()
 	else
-		DEFAULT_CHAT_FRAME:AddMessage(C.Main:WrapTextInColorCode(VDW.PrefixChat("SSOA").." "..L.P_WRN_NEED))
+		DEFAULT_CHAT_FRAME:AddMessage(Color.Main:WrapTextInColorCode(VDW.PrefixChat("SSOA").." "..VDWtranslate.Global.P_WRN_NEED))
+		UIErrorsFrame:AddExternalWarningMessage(VDW.PrefixError("SSOA").." "..VDWtranslate.Global.P_WRN_NEED)
 	end
 end)
--- Pop out 1 Buttons loading profiles  --
-ColoringPopOutButtons(2, 1)
--- enter --
-ssoaOptions2Box2PopOut1:HookScript("OnEnter", function(self)
-	VDW.Tooltip_Show(self, prefixTip, L.P_TIP_LOAD, C.Main)
-end)
--- leave --
-ssoaOptions2Box2PopOut1:HookScript("OnLeave", function(self) VDW.Tooltip_Hide() end)
--- click --
-ssoaOptions2Box2PopOut1:HookScript("OnClick", function(self, button, down)
-	if button == "LeftButton" and down == false then
-		if ssoaOptions2Box2PopOut1Choice1 ~= nil then
-			if not ssoaOptions2Box2PopOut1Choice1:IsShown() then
-				ssoaOptions2Box2PopOut1Choice1:Show()
-			else
-				ssoaOptions2Box2PopOut1Choice1:Hide()
+-- Box 2-3, PopOut 1, profile (load, delete)
+for i = 2, 3, 1 do
+	ssoaOptions.Panel2["Box"..i].PopOut1.Text:SetText(VDWtranslate.Global.LEFT_CLICK)
+	VDW.CreateOptionsPopOut(ssoaOptions.Panel2, i, 1, Color.Main, Color.High)
+	if i == 2 then
+		ssoaOptions.Panel2["Box"..i].PopOut1:HookScript("OnEnter", function(self)
+			VDW.Tooltip_Show(self, prefixTip, VDWtranslate.Global.P_TIP_LOAD, Color.Main, "Left")
+		end)
+		ssoaOptions.Panel2["Box"..i].PopOut1:HookScript("OnClick", function(self, button, down)
+			if button == "LeftButton" and down == false then
+				if ssoaOptions.Panel2["Box"..i].PopOut1.Choice1 == nil then
+					DEFAULT_CHAT_FRAME:AddMessage(Color.Main:WrapTextInColorCode(VDW.PrefixChat("SSOA").." "..VDWtranslate.Global.P_WRN_LOAD))
+					UIErrorsFrame:AddExternalWarningMessage(VDW.PrefixError("SSOA").." "..VDWtranslate.Global.P_WRN_LOAD)
+				end
 			end
-		else
-			DEFAULT_CHAT_FRAME:AddMessage(C.Main:WrapTextInColorCode(VDW.PrefixChat("SSOA").." "..L.P_WRN_LOAD))
-		end
-	end
-end)
--- Pop out 1 Buttons deleting profiles  --
-ColoringPopOutButtons(3, 1)
--- enter --
-ssoaOptions2Box3PopOut1:HookScript("OnEnter", function(self)
-	VDW.Tooltip_Show(self, prefixTip, L.P_TIP_DELETE, C.Main)
-end)
--- leave --
-ssoaOptions2Box3PopOut1:HookScript("OnLeave", function(self) VDW.Tooltip_Hide() end)
--- click --
-ssoaOptions2Box3PopOut1:HookScript("OnClick", function(self, button, down)
-	if button == "LeftButton" and down == false then
-		if ssoaOptions2Box3PopOut1Choice1 ~= nil then
-			if not ssoaOptions2Box3PopOut1Choice1:IsShown() then
-				ssoaOptions2Box3PopOut1Choice1:Show()
-			else
-				ssoaOptions2Box3PopOut1Choice1:Hide()
+		end)
+	else
+		ssoaOptions.Panel2["Box"..i].PopOut1:HookScript("OnEnter", function(self)
+			VDW.Tooltip_Show(self, prefixTip, VDWtranslate.Global.P_TIP_DELETE, Color.Main, "Left")
+		end)
+		ssoaOptions.Panel2["Box"..i].PopOut1:HookScript("OnClick", function(self, button, down)
+			if button == "LeftButton" and down == false then
+				if ssoaOptions.Panel2["Box"..i].PopOut1.Choice1 == nil then
+					DEFAULT_CHAT_FRAME:AddMessage(Color.Main:WrapTextInColorCode(VDW.PrefixChat("SSOA").." "..VDWtranslate.Global.P_WRN_DELETE))
+					UIErrorsFrame:AddExternalWarningMessage(VDW.PrefixError("SSOA").." "..VDWtranslate.Global.P_WRN_DELETE)
+				end
 			end
-		else
-			DEFAULT_CHAT_FRAME:AddMessage(C.Main:WrapTextInColorCode(VDW.PrefixChat("SSOA").." "..L.P_WRN_DELETE))
-		end
+		end)
 	end
-end)
--- finding keys --
-local function FindingKeys()
-	local Keys = 0
-	for k, v in pairs(SSOAprofiles) do
-		Keys = Keys + 1
-	end
-	number = Keys
-end
--- functions for loading the profiles --
-local function LoadingProfiles() -- vdwLoadingProfiles(asv1, asv2, asv3, txt1) 
-	if counterLoading == 0 and number > 0 then
+	if counter == 0 and Keys > 0 then
 		for k, v in pairs(SSOAprofiles) do
-			counterLoading = counterLoading + 1
-			local btn = CreateFrame("Button", "ssoaOptions2Box2PopOut1Choice"..counterLoading, nil, "vdwPopOutButton")
-			_G["ssoaOptions2Box2PopOut1Choice"..counterLoading]:ClearAllPoints()
-			if counterLoading == 1 then
-				_G["ssoaOptions2Box2PopOut1Choice"..counterLoading]:SetParent(ssoaOptions2Box2PopOut1)
-				_G["ssoaOptions2Box2PopOut1Choice"..counterLoading]:SetPoint("TOP", ssoaOptions2Box2PopOut1, "BOTTOM", 0, 4)
-				_G["ssoaOptions2Box2PopOut1Choice"..counterLoading]:SetScript("OnShow", function(self)
-					self:GetParent():SetNormalAtlas("charactercreate-customize-dropdownbox-hover")
-					PlaySound(855, "Master")
-				end)
-				_G["ssoaOptions2Box2PopOut1Choice"..counterLoading]:SetScript("OnHide", function(self)
-					self:GetParent():SetNormalAtlas("charactercreate-customize-dropdownbox-open")
-					PlaySound(855, "Master")
-				end)
-			else
-				_G["ssoaOptions2Box2PopOut1Choice"..counterLoading]:SetParent(ssoaOptions2Box2PopOut1Choice1)
-				_G["ssoaOptions2Box2PopOut1Choice"..counterLoading]:SetPoint("TOP", _G["ssoaOptions2Box2PopOut1Choice"..counterLoading-1], "BOTTOM", 0, 0)
-				_G["ssoaOptions2Box2PopOut1Choice"..counterLoading]:Show()
-			end
-				_G["ssoaOptions2Box2PopOut1Choice"..counterLoading].Text:SetText(k)
-				_G["ssoaOptions2Box2PopOut1Choice"..counterLoading]:SetWidth(_G["ssoaOptions2Box2PopOut1Choice"..counterLoading].Text:GetWidth())
-			_G["ssoaOptions2Box2PopOut1Choice"..counterLoading]:HookScript("OnClick", function(self, button, down)
+			counter = counter + 1
+			VDW.CreateOptionsPopOutButtons(ssoaOptions.Panel2, i, 1, counter, k, Color.Main)
+			ssoaOptions.Panel2["Box"..i].PopOut1["Choice"..counter].Text:SetText(k)
+			ssoaOptions.Panel2["Box"..i].PopOut1["Choice"..counter]:HookScript("OnClick", function(self, button, down)
 				if button == "LeftButton" and down == false then
-					SSOAsettings = SSOAprofiles[k]["settings"]
-					C_UI.Reload()
+					if i == 2 then
+						SSOAsettings = SSOAprofiles[k]["settings"]
+						C_UI.Reload()
+					else
+						SSOAprofiles[k] = nil
+						C_UI.Reload()
+					end
 				end
 			end)
-		local w = _G["ssoaOptions2Box2PopOut1Choice"..counterLoading].Text:GetStringWidth()
+			local w = ssoaOptions.Panel2["Box"..i].PopOut1["Choice"..counter].Text:GetStringWidth()
 			if w > maxW then maxW = w end
 		end
 		finalW = math.ceil(maxW + 24)
-		for i = 1, counterLoading do
-			_G["ssoaOptions2Box2PopOut1Choice"..i]:SetWidth(finalW)
+		for c = 1, counter, 1 do
+			ssoaOptions.Panel2["Box"..i].PopOut1["Choice"..c]:SetWidth(finalW)
 		end
+		counter = 0
 	end
 end
--- functions for deleting the profiles --
-local function DeletingProfiles()
-	if counterDeleting == 0 and number > 0 then
-		for k, v in pairs(SSOAprofiles) do
-			counterDeleting = counterDeleting + 1
-			local btn = CreateFrame("Button", "ssoaOptions2Box3PopOut1Choice"..counterDeleting, nil, "vdwPopOutButton")
-			_G["ssoaOptions2Box3PopOut1Choice"..counterDeleting]:ClearAllPoints()
-			if counterDeleting == 1 then
-				_G["ssoaOptions2Box3PopOut1Choice"..counterDeleting]:SetParent(ssoaOptions2Box3PopOut1)
-				_G["ssoaOptions2Box3PopOut1Choice"..counterDeleting]:SetPoint("TOP", ssoaOptions2Box3PopOut1, "BOTTOM", 0, 4)
-				_G["ssoaOptions2Box3PopOut1Choice"..counterDeleting]:SetScript("OnShow", function(self)
-					self:GetParent():SetNormalAtlas("charactercreate-customize-dropdownbox-hover")
-					PlaySound(855, "Master")
-				end)
-				_G["ssoaOptions2Box3PopOut1Choice"..counterDeleting]:SetScript("OnHide", function(self)
-					self:GetParent():SetNormalAtlas("charactercreate-customize-dropdownbox-open")
-					PlaySound(855, "Master")
-				end)
-			else
-				_G["ssoaOptions2Box3PopOut1Choice"..counterDeleting]:SetParent(ssoaOptions2Box3PopOut1Choice1)
-				_G["ssoaOptions2Box3PopOut1Choice"..counterDeleting]:SetPoint("TOP", _G["ssoaOptions2Box3PopOut1Choice"..counterDeleting-1], "BOTTOM", 0, 0)
-				_G["ssoaOptions2Box3PopOut1Choice"..counterDeleting]:Show()
-			end
-				_G["ssoaOptions2Box3PopOut1Choice"..counterDeleting].Text:SetText(k)
-				_G["ssoaOptions2Box3PopOut1Choice"..counterDeleting]:SetWidth(_G["ssoaOptions2Box3PopOut1Choice"..counterDeleting].Text:GetWidth())
-			_G["ssoaOptions2Box3PopOut1Choice"..counterDeleting]:HookScript("OnClick", function(self, button, down)
-				if button == "LeftButton" and down == false then
-					SSOAprofiles[k] = nil
-					C_UI.Reload()
-				end
-			end)
-		local w = _G["ssoaOptions2Box3PopOut1Choice"..counterDeleting].Text:GetStringWidth()
-			if w > maxW then maxW = w end
-		end
-		finalW = math.ceil(maxW + 24)
-		for i = 1, counterDeleting do
-			_G["ssoaOptions2Box3PopOut1Choice"..i]:SetWidth(finalW)
-		end
-	end
-end
-ssoaOptions2Box2PopOut1.Text:SetText(G.BUTTON_L_CLICK)
-ssoaOptions2Box3PopOut1.Text:SetText(G.BUTTON_L_CLICK)
-FindingKeys()
-LoadingProfiles()
-DeletingProfiles()
--- Show the option panel --
-ssoaOptions2:HookScript("OnShow", function(self)
-	ssoaOptions00Tab1.Text:SetTextColor(0.4, 0.4, 0.4, 1)
-	if ssoaOptions1:IsShown() then ssoaOptions1:Hide() end
-	ssoaOptions00Tab2.Text:SetTextColor(C.High:GetRGB())
+-- Box 4, Notes
+VDW.CreateImportantNotesProfiles("SSOA", ssoaOptions.Panel2, 4, Color.Main, Color.High)
+-- Show the option panel
+ssoaOptions.Panel2:HookScript("OnShow", function(self)
+	if ssoaOptions.Panel1:IsShown() then ssoaOptions.Panel1:Hide() end
+	ssoaOptions.Tab1.Text:SetTextColor(0.4, 0.4, 0.4, 1)
+	ssoaOptions.Tab2.Text:SetTextColor(Color.High:GetRGB())
 end)

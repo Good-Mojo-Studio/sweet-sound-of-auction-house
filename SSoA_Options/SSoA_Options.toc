@@ -1,8 +1,8 @@
-## Interface: 120005
+## Interface: 120007
 ## IconAtlas: common-icon-sound-pressed
 ## Title: Sweet |cFFFFBF00Sound|r of |cFFFFBF00Auction|r House Options
 ## Notes: |cFFFFDF80Options for the Sweet |cFFFFBF00Sound|r of |cFFFFBF00Auction|r House!|r
-## Version: 2.00.08
+## Version: 2.01.00
 ## Group: VDWS
 ## Dependencies: SSOA
 ## LoadOnDemand: 1
@@ -10,7 +10,6 @@
 ## Author: The_Indolent
 ## X-Website: https://panosanastasiou.rocks/
 
-SSOA_Options_L.lua
 SSOA_Options_0.xml
 SSOA_Options_1.xml
 SSOA_Options_2.xml
